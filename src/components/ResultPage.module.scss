@@ -1,0 +1,11 @@
+.pageNumber {
+    margin: 0 1rem;
+    display: none;
+    &.active {
+        background-color: black;
+    }
+
+    &.shown {
+        display: inline-block;
+    }
+}
