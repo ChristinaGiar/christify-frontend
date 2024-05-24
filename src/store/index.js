@@ -1,36 +1,17 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-import listenedSongsReducer from "./listenedList";
-
-const initialSongState = {
-  schema: {
-    album: {}, // album
-    song: {}, // played song's details
-    isPlaying: false,
-  },
-};
-
-const activeSongSlice = createSlice({
-  name: "activeSong",
-  initialState: initialSongState,
-  reducers: {
-    setActiveSong(state, action) {
-      state.schema.song = action.payload.song;
-      state.schema.album = action.payload.album;
-      state.schema.isPlaying = true;
-    },
-    setPlayingMode(state, action) {
-      state.schema.isPlaying = action.payload;
-      console.log("state.schema.isPlaying", state.schema.isPlaying);
-    },
-  },
-});
+import { configureStore } from '@reduxjs/toolkit'
+import activeSongReducer from './activeSong.js'
+import { setupListeners } from '@reduxjs/toolkit/query'
+import { songsApi } from './apiServices.js'
 
 const store = configureStore({
   reducer: {
-    activeSong: activeSongSlice.reducer,
-    listenedSongs: listenedSongsReducer,
+    [songsApi.reducerPath]: songsApi.reducer,
+    activeSong: activeSongReducer,
   },
-});
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(songsApi.middleware),
+})
 
-export const activeSongActions = activeSongSlice.actions;
-export default store;
+setupListeners(store.dispatch)
+
+export default store

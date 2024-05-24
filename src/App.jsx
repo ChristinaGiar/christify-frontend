@@ -1,91 +1,101 @@
-import { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Provider } from 'react-redux';
-import Root from "./pages/Root";
-import store from "./store/index";
-import Homepage from "./pages/Homepage";
-import SearchInput from "./components/SearchInput";
-import AlbumPage from "./pages/AlbumPage";
+import { useEffect } from 'react'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import Root from './pages/Root'
+import store from './store/index'
+import Homepage from './pages/Homepage'
+import SearchInput from './components/SearchInput'
+import AlbumPage from './pages/AlbumPage'
 
 export const routesConfig = [
   {
     path: '/',
     element: <Root />,
     errorElement: <div>Error</div>,
-    id: "root",
+    id: 'root',
     // loader: ()=>{},
     children: [
       {
-        index: true, element:
+        index: true,
+        element: (
           <>
             <Homepage />
           </>
+        ),
       },
       {
         path: 'search',
-        element:
+        element: (
           <>
             <SearchInput />
-          </>,
+          </>
+        ),
       },
       {
         path: 'album/:albumID',
-        element:
+        element: (
           <>
             <AlbumPage />
-          </>,
-        loader: async ({ _, params }) => {
-          return fetch(
-            `http://localhost:3000/album?albumID=${params.albumID}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-          }
-          );
+          </>
+        ),
+        loader: ({ _, params }) => {
+          return params.albumID
         },
-      }
-    ]
-  }
-];
+        // async ({ _, params }) => {
+        //   return fetch(
+        //     `http://localhost:3000/album?albumID=${params.albumID}`, {
+        //     method: 'GET',
+        //     headers: { 'Content-Type': 'application/json' },
+        //   }
+        //   );
+        // },
+      },
+    ],
+  },
+]
 
-const router = createBrowserRouter(routesConfig);
+const router = createBrowserRouter(routesConfig)
 
 const App = () => {
-  var timer = 0;
+  var timer = 0
 
   useEffect(() => {
-    fetchAccessToken();
+    fetchAccessToken()
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer)
     }
-  }, []);
+  }, [])
 
   const requestInfo = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
-  };
+  }
 
   const fetchAccessToken = async () => {
     try {
-      const expiresIn = await fetch('http://localhost:3000/access', requestInfo);
-      const expirationTime = await expiresIn.text();
+      const expiresIn = await fetch('http://localhost:3000/access', requestInfo)
+      const expirationTime = await expiresIn.text()
 
       timer = setTimeout(() => {
         fetchAccessToken()
-      }, +expirationTime * 1000);
+      }, +expirationTime * 1000)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
   const fetchTrack = async () => {
-    const track = await fetch('http://localhost:3000/track?trackID=11dFghVXANMlKmJXsNCbNl', {
-      method: "GET",
-      headers: {
-        'Content-Type': 'application/json'
+    const track = await fetch(
+      'http://localhost:3000/track?trackID=11dFghVXANMlKmJXsNCbNl',
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        // body: JSON.stringify(data),
       }
-      // body: JSON.stringify(data),
-    });
-    console.log(await track.json());
+    )
+    console.log(await track.json())
   }
   return (
     <Provider store={store}>
@@ -94,4 +104,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App
