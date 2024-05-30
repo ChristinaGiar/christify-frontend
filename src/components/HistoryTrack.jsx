@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
 import { activeSongActions } from '../store/activeSong'
 import Square from '../layout/Square'
-import { usePostLatestSongMutation } from '../store/apiServices'
+import { setBrowsedType } from '../store/apiServices'
 
 const HistoryTrack = (props) => {
   const [isHovering, setIsHovering] = useState(false)
   const activeSong = useSelector((state) => state.activeSong)
-  const [triggerLatestSong, latestSong] = usePostLatestSongMutation()
   const dispatch = useDispatch()
 
   const handleMouseOver = () => {
@@ -36,10 +35,15 @@ const HistoryTrack = (props) => {
         activeSongActions.setActiveSong({
           album: album,
           song: track,
-          isHistory: true,
         })
       )
-      triggerLatestSong(props)
+      // triggerLatestSong(props)
+      dispatch(
+        setBrowsedType({
+          type: 'history-track',
+          track: props,
+        })
+      )
     }
   }
   return (

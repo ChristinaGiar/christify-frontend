@@ -2,26 +2,33 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useCallback, useRef } from 'react'
 import { activeSongActions } from '../store/activeSong'
+import { isEmpty, isEmptyObject } from '../utils/functions'
 import {
+  setBrowsedType,
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
 } from '../store/apiServices'
 import { useState } from 'react'
+import { LATEST_SONGS_LENGTH } from '../utils/constants'
 
-const Controls = ({ audioRef, setTimeProgress, duration, rangeRef }) => {
+const Controls = ({
+  audioRef,
+  timeProgress,
+  setTimeProgress,
+  duration,
+  rangeRef,
+}) => {
   const dispatch = useDispatch()
 
   const activeSong = useSelector((state) => state.activeSong)
-  const [isPrevNextPressed, setIsPrevNextPressed] = useState({
-    prev: false,
-    next: false,
-  })
+  const browsedType = useSelector((state) => state.apiServices?.browsedType)
+  const [isNextPressed, setIsNextPressed] = useState(false)
+  const [isPrevPressed, setIsPrevPressed] = useState(false)
   const playAnimationRef = useRef()
+  const nextRef = useRef(null)
   const [triggerLatestSongs, latestSongs] = useLazyGetLatestSongsQuery()
-  const [triggerLatestSong, latestSong] = usePostLatestSongMutation()
-
+  const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
   const repeat = useCallback(() => {
-    // console.log(audioRef.current.currentTime); // CHECK WHY IT KEEPS RUNNING
     const currentTime = audioRef.current.currentTime
     setTimeProgress(currentTime)
     rangeRef.current.value = currentTime
@@ -35,7 +42,6 @@ const Controls = ({ audioRef, setTimeProgress, duration, rangeRef }) => {
 
   useEffect(() => {
     if (activeSong.schema.isPlaying) {
-      console.log('activeSong', activeSong)
       audioRef.current.play()
     } else {
       audioRef.current.pause()
@@ -45,16 +51,8 @@ const Controls = ({ audioRef, setTimeProgress, duration, rangeRef }) => {
   }, [audioRef, repeat, activeSong])
 
   useEffect(() => {
-    // TEST
-    latestSongs.isSuccess && console.log('Latest songs', latestSongs)
-  }, [latestSongs])
-
-  // songIndex = Math.random(latestSongs.data.length)
-
-  useEffect(() => {
     if (activeSong.schema.replayed) {
       audioRef.current.currentTime = 0
-      console.log('REPLAY')
       dispatch(
         activeSongActions.setReplayed({
           replayed: false,
@@ -62,6 +60,202 @@ const Controls = ({ audioRef, setTimeProgress, duration, rangeRef }) => {
       )
     }
   }, [activeSong, audioRef, dispatch])
+
+  useEffect(() => {
+    // autoplay functionality
+    if (timeProgress === duration && duration > 0 && timeProgress > 0) {
+      nextRef.current.click()
+    }
+  }, [timeProgress, duration])
+
+  useEffect(() => {
+    // handle album songs on autoplay / button clicked "Next" button
+    if (
+      isNextPressed &&
+      browsedType.type === 'album' &&
+      browsedType.albumTrigger
+    ) {
+      const album = browsedType.album
+      nextRef.current.click()
+      const nextSongIdx =
+        album.tracks.findIndex(
+          (track) => track.trackID === activeSong.schema.song.trackID
+        ) + 1
+      const nextSongIdxAdapted = nextSongIdx % album.tracks.length
+      setActiveSongAction(album.tracks, nextSongIdxAdapted, album)
+      /* dispatch(
+        activeSongActions.setActiveSong({
+          song: {
+            name: album.tracks[nextSongIdxAdapted].name,
+            trackID: album.tracks[nextSongIdxAdapted].trackID,
+            song: album.tracks[nextSongIdxAdapted].song,
+          },
+          album,
+          isPlaying: activeSong.schema.isPlaying,
+        })
+      ) */
+      triggerLatestSong({
+        ...album.tracks[nextSongIdxAdapted],
+        image: album.tracks[nextSongIdxAdapted].image.url,
+      })
+      setIsNextPressed(false)
+    }
+  }, [isNextPressed, browsedType.type])
+
+  useEffect(() => {
+    if (latestSongs.isSuccess) {
+      if (browsedType.type === 'track' || browsedType.type === 'track-first') {
+        if (isPrevPressed) {
+          // search history
+          const currentSongIdx = browsedType.browsedTracks.findIndex(
+            (track) => track.song === audioRef.current.src
+          )
+
+          if (currentSongIdx === 0) {
+            dispatch(
+              activeSongActions.setReplayed({
+                replayed: true,
+              })
+            )
+          } else {
+            const nextSongIdx = currentSongIdx - 1
+            setActiveSongAction(browsedType.browsedTracks, nextSongIdx)
+            /* dispatch(
+              activeSongActions.setActiveSong({
+                song: {
+                  name: browsedType.browsedTracks[nextSongIdx].name,
+                  trackID: browsedType.browsedTracks[nextSongIdx].trackID,
+                  song: browsedType.browsedTracks[nextSongIdx].song,
+                },
+                album: browsedType.browsedTracks[nextSongIdx].album,
+                isPlaying: activeSong.schema.isPlaying,
+              })
+            ) */
+          }
+          setIsPrevPressed(false)
+        } else if (isNextPressed) {
+          // pick randomly one from history
+          const currentSongIdx = browsedType.browsedTracks.findIndex(
+            (track) => track.song === audioRef.current.src
+          )
+          let nextSongIdx, songReplayedIdx
+          if (currentSongIdx < browsedType.browsedTracks.length - 1) {
+            // if before last
+            nextSongIdx = currentSongIdx + 1
+            setActiveSongAction(browsedType.browsedTracks, nextSongIdx)
+            /*  dispatch(
+              activeSongActions.setActiveSong({
+                song: {
+                  name: browsedType.browsedTracks[nextSongIdx].name,
+                  trackID: browsedType.browsedTracks[nextSongIdx].trackID,
+                  song: browsedType.browsedTracks[nextSongIdx].song,
+                },
+                album: browsedType.browsedTracks[nextSongIdx].album,
+                isPlaying: activeSong.schema.isPlaying,
+              })
+            ) */
+            triggerLatestSong(browsedType.browsedTracks[nextSongIdx])
+          } else {
+            // pick randomly one from history
+            let iterations = 0
+            do {
+              nextSongIdx = Math.floor(
+                Math.random() * (latestSongs.data.length - 1)
+              )
+              songReplayedIdx = browsedType.browsedTracks.findIndex(
+                (track) =>
+                  track.trackID === latestSongs.data[nextSongIdx].trackID
+              )
+              iterations++
+            } while (
+              // latestSongs.data[nextSongIdx].song === audioRef.current.src ||
+              songReplayedIdx !== -1
+            )
+
+            if (iterations < 10) {
+              dispatch(
+                setBrowsedType({
+                  type: 'track',
+                  track: latestSongs.data[nextSongIdx],
+                })
+              )
+              setActiveSongAction(latestSongs.data, nextSongIdx)
+              /* dispatch(
+                activeSongActions.setActiveSong({
+                  song: {
+                    name: latestSongs.data[nextSongIdx].name,
+                    trackID: latestSongs.data[nextSongIdx].trackID,
+                    song: latestSongs.data[nextSongIdx].song,
+                  },
+                  album: latestSongs.data[nextSongIdx].album,
+                  isPlaying: activeSong.schema.isPlaying,
+                })
+              ) */
+              triggerLatestSong(latestSongs.data[nextSongIdx])
+            } else {
+              // TODO: CALL another api based on last song
+              console.log('add 10 songs to browsedTracks')
+            }
+          }
+          setIsNextPressed(false)
+        }
+      } else if (browsedType.type === 'history-track') {
+        if (isPrevPressed) {
+          const currentSongIdx = latestSongs.data.findIndex(
+            (track) => track.song === audioRef.current.src
+          )
+
+          if (currentSongIdx === 0) {
+            dispatch(
+              activeSongActions.setReplayed({
+                replayed: true,
+              })
+            )
+          } else {
+            const nextSongIdx = currentSongIdx - 1
+            setActiveSongAction(latestSongs.data, nextSongIdx)
+            /* dispatch(
+              activeSongActions.setActiveSong({
+                song: {
+                  name: latestSongs.data[nextSongIdx].name,
+                  trackID: latestSongs.data[nextSongIdx].trackID,
+                  song: latestSongs.data[nextSongIdx].song,
+                },
+                album: latestSongs.data[nextSongIdx].album,
+                isPlaying: activeSong.schema.isPlaying,
+              })
+            ) */
+          }
+          setIsPrevPressed(false)
+        } else if (isNextPressed) {
+          const currentSongIdx = latestSongs.data.findIndex(
+            (track) => track.song === audioRef.current.src
+          )
+
+          if (currentSongIdx === LATEST_SONGS_LENGTH - 1) {
+            // latestSongs.data.length
+            audioRef.current.pause()
+            dispatch(activeSongActions.setPlayingMode(false))
+          } else {
+            const nextSongIdx = currentSongIdx + 1
+            setActiveSongAction(latestSongs.data, nextSongIdx)
+            /* dispatch(
+              activeSongActions.setActiveSong({
+                song: {
+                  name: latestSongs.data[nextSongIdx].name,
+                  trackID: latestSongs.data[nextSongIdx].trackID,
+                  song: latestSongs.data[nextSongIdx].song,
+                },
+                album: latestSongs.data[nextSongIdx].album,
+                isPlaying: activeSong.schema.isPlaying,
+              })
+            ) */
+          }
+          setIsNextPressed(false)
+        }
+      }
+    }
+  }, [latestSongs, isPrevPressed, isNextPressed])
 
   const handleSkipForward = () => {
     audioRef.current.currentTime += 10
@@ -72,26 +266,90 @@ const Controls = ({ audioRef, setTimeProgress, duration, rangeRef }) => {
   }
 
   const handlePrevious = () => {
-    triggerLatestSongs()
-    console.log('run 2')
-    setIsPrevNextPressed((prevState) => ({ ...prevState, prev: true }))
+    if (browsedType.type === 'album' && browsedType.albumTrigger) {
+      const album = browsedType.album
+
+      const prevSongIdx = album.tracks.findIndex(
+        (track) => track.trackID === activeSong.schema.song.trackID
+      )
+
+      if (prevSongIdx !== 0) {
+        const prevSongIdxAdapted = prevSongIdx - 1
+        setActiveSongAction(album.tracks, prevSongIdxAdapted, album)
+        /*         dispatch(
+          activeSongActions.setActiveSong({
+            song: {
+              name: album.tracks[prevSongIdxAdapted].name,
+              trackID: album.tracks[prevSongIdxAdapted].trackID,
+              song: album.tracks[prevSongIdxAdapted].song,
+            },
+            album,
+            isPlaying: activeSong.schema.isPlaying,
+          })
+        ) */
+
+        triggerLatestSong({
+          ...album.tracks[prevSongIdxAdapted],
+          image: album.tracks[prevSongIdxAdapted].image.url,
+        })
+      } else {
+        // 1st song is playing
+        dispatch(
+          activeSongActions.setReplayed({
+            replayed: true,
+          })
+        )
+      }
+    } else if (browsedType.type === 'track') {
+      triggerLatestSongs()
+    }
+    setIsPrevPressed(true)
+  }
+
+  const setActiveSongAction = (songs, index, album = {}) => {
+    dispatch(
+      activeSongActions.setActiveSong({
+        song: {
+          name: songs[index].name,
+          trackID: songs[index].trackID,
+          song: songs[index].song,
+        },
+        album: isEmptyObject(album) ? album : songs[index].album,
+        isPlaying: activeSong.schema.isPlaying,
+      })
+    )
   }
 
   const handleNext = () => {
-    setIsPrevNextPressed((prevState) => ({ ...prevState, next: true }))
+    if (
+      browsedType.type === 'track-first' ||
+      browsedType.type === 'track' ||
+      browsedType.type === 'history-track'
+    ) {
+      triggerLatestSongs()
+    }
+    setIsNextPressed(true)
   }
+
   const handleTogglePlay = () => {
     dispatch(activeSongActions.setPlayingMode(!activeSong.schema.isPlaying))
   }
+
   return (
     <>
-      <div onClick={handlePrevious}>Previous</div>
-      <div onClick={handleSkipBackward}>handleSkipForward</div>
+      <button onClick={handlePrevious}>Previous</button>
+      <button onClick={handleSkipBackward}>handleSkipForward</button>
       <div onClick={handleTogglePlay}>
-        {activeSong.schema.isPlaying ? <div>Pause</div> : <div>Play</div>}
+        {activeSong.schema.isPlaying ? (
+          <button>Pause</button>
+        ) : (
+          <button>Play</button>
+        )}
       </div>
-      <div onClick={handleSkipForward}>handleSkipForward</div>
-      <div onClick={handleNext}>Next</div>
+      <button onClick={handleSkipForward}>handleSkipForward</button>
+      <button ref={nextRef} onClick={handleNext}>
+        Next
+      </button>
     </>
   )
 }
@@ -101,6 +359,7 @@ export default Controls
 Controls.propTypes = {
   audioRef: PropTypes.object,
   rangeRef: PropTypes.object,
+  timeProgress: PropTypes.number,
   setTimeProgress: PropTypes.func,
   duration: PropTypes.number,
   playingMode: PropTypes.bool,

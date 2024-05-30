@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 import History from '../components/History'
 import { useLazyGetLatestSongsQuery } from '../store/apiServices'
-
+import { isEmpty } from '../utils/functions'
+import { LATEST_SONGS_LENGTH } from '../utils/constants'
 const Homepage = () => {
   const [triggerLatestSongs, latestSongs] = useLazyGetLatestSongsQuery()
-  // const { data: songs, error, isLoading } = useGetLatestSongsQuery();
-  // songs && (latestListenedSongs = songs.slice(0, 8));
 
   useEffect(() => {
     triggerLatestSongs()
@@ -13,9 +12,10 @@ const Homepage = () => {
   return (
     <>
       <div>Homepage</div>
-      {latestSongs.data?.length !== 0 && latestSongs.isSuccess && (
-        <History lastSongs={latestSongs.data.slice(0, 8)} />
-      )}
+      {!isEmpty(latestSongs.data) &&
+        latestSongs.isSuccess && ( //latestSongs.data?.length !== 0
+          <History lastSongs={latestSongs.data.slice(0, LATEST_SONGS_LENGTH)} />
+        )}
     </>
   )
 }

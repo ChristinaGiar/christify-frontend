@@ -3,16 +3,14 @@ import { useRef } from 'react'
 import Controls from './Controls'
 import Range from './Range'
 import { useState } from 'react'
-import { isEmpty } from '../utils'
+import { isEmptyObject } from '../utils/functions'
 
 const SongPlayer = () => {
   const audioRef = useRef()
   const rangeRef = useRef()
   const [duration, setDuration] = useState(0)
   const [timeProgress, setTimeProgress] = useState(0)
-  console.log('SongPlayer')
   const activeSong = useSelector((state) => state.activeSong)
-  // console.log("activeSong", activeSong);
   const loadRangeData = () => {
     const seconds = audioRef.current.duration
     setDuration(seconds)
@@ -20,7 +18,7 @@ const SongPlayer = () => {
   }
 
   return (
-    !isEmpty(activeSong.schema.song) && (
+    !isEmptyObject(activeSong.schema.song) && (
       <>
         <div>Name: {activeSong.schema.song.name}</div>
         <div>SongPlayer {activeSong.schema.song.trackID}</div>
@@ -32,6 +30,7 @@ const SongPlayer = () => {
         <div>Album: {activeSong.schema.album.albumName}</div>
         <Controls
           audioRef={audioRef}
+          timeProgress={timeProgress}
           setTimeProgress={setTimeProgress}
           rangeRef={rangeRef}
           duration={duration}

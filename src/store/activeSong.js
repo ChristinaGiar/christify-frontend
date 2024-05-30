@@ -2,12 +2,9 @@ import { createSlice } from '@reduxjs/toolkit'
 
 const initialSongState = {
   schema: {
-    album: {}, // album
-    song: {}, // played song's details
+    album: {}, // album: albumID, albumName
+    song: {}, // played song's details: name, trackID, song
     isPlaying: false,
-    isAlbum: false, // song playing is from an album collection
-    isHistory: false, // song playing is from the latest songs collection
-    isSearch: false, // song playing is from the song search
     replayed: false,
   },
 }

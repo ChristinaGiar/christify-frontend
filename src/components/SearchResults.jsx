@@ -20,7 +20,7 @@ const SearchResults = ({ query, title, type }) => {
       }
     }, 500)
     return () => clearTimeout(typingTimer)
-  }, [query]) //, [query] inputRef.current?.value
+  }, [query]) //inputRef.current?.value
 
   useEffect(() => {
     if (activeOffset !== -1) {

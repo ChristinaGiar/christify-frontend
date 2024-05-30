@@ -1,31 +1,77 @@
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { activeSongActions } from '../store/activeSong'
-import { usePostLatestSongMutation } from '../store/apiServices'
+import { setBrowsedType, usePostLatestSongMutation } from '../store/apiServices'
 import { useEffect, useState } from 'react'
 
 const Track = (props) => {
-  const [triggerLatestSong, latestSong] = usePostLatestSongMutation()
+  const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
   const [isActive, setIsActive] = useState(false)
   const activeSong = useSelector((state) => state.activeSong)
 
   const dispatch = useDispatch()
-  console.log('latestSong', latestSong)
   useEffect(() => {
     if (activeSong.song === props.song) {
       setIsActive(true)
     }
-  }, [activeSong])
+  }, [activeSong, props.song])
 
-  const clickHandler = async () => {
+  const handleClick = () => {
     const { album, ...track } = props
-    dispatch(activeSongActions.setActiveSong({ album: album, song: track }))
-    triggerLatestSong(props)
+
+    /* if (
+      activeSong.schema.song?.song &&
+      props.song === activeSong.schema.song.song
+    ) {
+      dispatch(
+        activeSongActions.setReplayed({
+          replayed: true,
+        })
+      )
+    } else { */
+    dispatch(
+      activeSongActions.setActiveSong({
+        album: album,
+        song: track,
+      })
+    )
+    console.log('props.type', props.type)
+    if (props.type === 'track') {
+      // add track to browsedTracks
+      dispatch(
+        setBrowsedType({
+          type: 'track-first',
+          track: props,
+          album: {}, // erase irrevelant data
+        })
+      )
+    } else if (props.type === 'album') {
+      dispatch(
+        setBrowsedType({
+          type: 'album',
+          albumTrigger: true,
+          browsedTracks: [], // erase irrevelant data
+        })
+      )
+    }
+    if (
+      activeSong.schema.song?.song &&
+      props.song !== activeSong.schema.song.song
+    ) {
+      triggerLatestSong(props)
+    } else {
+      dispatch(
+        activeSongActions.setReplayed({
+          replayed: true,
+        })
+      )
+    }
+    /* } */
   }
   return (
     <div
       style={{ border: isActive && '1px solid white' }}
-      onClick={props.song && clickHandler}
+      onClick={props.song && handleClick}
     >
       -------------------------------------------------------------------------
       {props.image && <img width='30' height='30' src={props.image} />}
@@ -55,5 +101,6 @@ Track.propTypes = {
   image: PropTypes.string,
   type: PropTypes.string,
   song: PropTypes.string,
+  browsedType: PropTypes.string,
 }
 export default Track
