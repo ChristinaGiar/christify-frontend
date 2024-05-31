@@ -1,8 +1,9 @@
 import { useLoaderData } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-import Track from '../components/Track'
-import { setBrowsedType, useGetAlbumQuery } from '../store/apiServices'
+import Track from '../components/Track/Track'
+import { setBrowsedType } from '../store/controllers'
+import { useGetAlbumQuery } from '../store/apiServices'
 import { useEffect } from 'react'
 
 function AlbumPage() {

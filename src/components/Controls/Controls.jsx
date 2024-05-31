@@ -1,15 +1,15 @@
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useCallback, useRef } from 'react'
-import { activeSongActions } from '../store/activeSong'
-import { isEmpty, isEmptyObject } from '../utils/functions'
+import { activeSongActions } from '../../store/activeSong'
+import { isEmptyObject } from '../../utils/functions'
 import {
-  setBrowsedType,
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
-} from '../store/apiServices'
+} from '../../store/apiServices'
+import { setBrowsedType } from '../../store/controllers'
 import { useState } from 'react'
-import { LATEST_SONGS_LENGTH } from '../utils/constants'
+import { LATEST_SONGS_LENGTH } from '../../utils/constants'
 
 const Controls = ({
   audioRef,
@@ -21,7 +21,7 @@ const Controls = ({
   const dispatch = useDispatch()
 
   const activeSong = useSelector((state) => state.activeSong)
-  const browsedType = useSelector((state) => state.apiServices?.browsedType)
+  const browsedType = useSelector((state) => state.controllers?.browsedType)
   const [isNextPressed, setIsNextPressed] = useState(false)
   const [isPrevPressed, setIsPrevPressed] = useState(false)
   const playAnimationRef = useRef()
@@ -51,6 +51,7 @@ const Controls = ({
   }, [audioRef, repeat, activeSong])
 
   useEffect(() => {
+    // restart on replayed track
     if (activeSong.schema.replayed) {
       audioRef.current.currentTime = 0
       dispatch(
@@ -167,10 +168,7 @@ const Controls = ({
                   track.trackID === latestSongs.data[nextSongIdx].trackID
               )
               iterations++
-            } while (
-              // latestSongs.data[nextSongIdx].song === audioRef.current.src ||
-              songReplayedIdx !== -1
-            )
+            } while (songReplayedIdx !== -1)
 
             if (iterations < 10) {
               dispatch(

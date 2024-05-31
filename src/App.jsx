@@ -4,10 +4,10 @@ import { Provider } from 'react-redux'
 import Root from './pages/Root'
 import store from './store/index'
 import Homepage from './pages/Homepage'
-import SearchInput from './components/SearchInput'
+import SearchInput from './components/SearchInput/SearchInput'
 import AlbumPage from './pages/AlbumPage'
 
-export const routesConfig = [
+const routesConfig = [
   {
     path: '/',
     element: <Root />,

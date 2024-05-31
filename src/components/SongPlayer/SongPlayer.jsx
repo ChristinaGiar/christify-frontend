@@ -1,21 +1,28 @@
 import { useSelector } from 'react-redux'
-import { useRef } from 'react'
-import Controls from './Controls'
-import Range from './Range'
+import { useEffect, useRef } from 'react'
+import Controls from '../Controls/Controls'
+import Range from '../Range/Range'
 import { useState } from 'react'
-import { isEmptyObject } from '../utils/functions'
+import { isEmptyObject } from '../../utils/functions'
+import Volume from '../Volume/Volume'
 
 const SongPlayer = () => {
   const audioRef = useRef()
   const rangeRef = useRef()
   const [duration, setDuration] = useState(0)
   const [timeProgress, setTimeProgress] = useState(0)
+  // const [volume, setVolume] = useState(70)
   const activeSong = useSelector((state) => state.activeSong)
   const loadRangeData = () => {
     const seconds = audioRef.current.duration
     setDuration(seconds)
     rangeRef.current.max = seconds
   }
+  // useEffect(() => {
+  //   if (audioRef.current) {
+  //     audioRef.current.volume = volume / 100
+  //   }
+  // }, [volume, audioRef])
 
   return (
     !isEmptyObject(activeSong.schema.song) && (
@@ -42,6 +49,7 @@ const SongPlayer = () => {
           duration={duration}
           timeProgress={timeProgress}
         />
+        <Volume audioRef={audioRef} />
       </>
     )
   )

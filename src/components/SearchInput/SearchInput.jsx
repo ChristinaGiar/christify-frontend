@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import SearchAlbums from './SearchAlbums'
-import SearchTracks from './SearchTracks'
+import SearchAlbums from '../SearchAlbums/SearchAlbums'
+import SearchTracks from '../SearchTracks/SearchTracks'
 
 const SearchInput = () => {
   const [query, setQuery] = useState('')

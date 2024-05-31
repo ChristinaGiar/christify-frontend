@@ -1,4 +1,4 @@
-import SearchResults from './SearchResults'
+import SearchResults from '../SearchResults/SearchResults'
 import PropTypes from 'prop-types'
 
 const SearchAlbums = ({ query }) => {

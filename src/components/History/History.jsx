@@ -1,4 +1,4 @@
-import HistoryTrack from './HistoryTrack'
+import HistoryTrack from '../HistoryTrack/HistoryTrack'
 import { PropTypes } from 'prop-types'
 
 const History = ({ lastSongs }) => {

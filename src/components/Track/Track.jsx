@@ -1,20 +1,16 @@
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
-import { activeSongActions } from '../store/activeSong'
-import { setBrowsedType, usePostLatestSongMutation } from '../store/apiServices'
-import { useEffect, useState } from 'react'
+import { activeSongActions } from '../../store/activeSong'
+import { setBrowsedType } from '../../store/controllers'
+
+import { usePostLatestSongMutation } from '../../store/apiServices'
 
 const Track = (props) => {
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
-  const [isActive, setIsActive] = useState(false)
+  // const [isActive, setIsActive] = useState(false)
   const activeSong = useSelector((state) => state.activeSong)
-
   const dispatch = useDispatch()
-  useEffect(() => {
-    if (activeSong.song === props.song) {
-      setIsActive(true)
-    }
-  }, [activeSong, props.song])
+  const isActive = activeSong.schema.song.trackID === props.trackID
 
   const handleClick = () => {
     const { album, ...track } = props
@@ -35,7 +31,6 @@ const Track = (props) => {
         song: track,
       })
     )
-    console.log('props.type', props.type)
     if (props.type === 'track') {
       // add track to browsedTracks
       dispatch(

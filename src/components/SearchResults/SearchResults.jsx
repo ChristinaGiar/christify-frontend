@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import ResultPage from './ResultPage'
+import ResultPageNumber from '../ResultPageNumber/ResultPageNumber'
 import PropTypes from 'prop-types'
 import classes from './SearchResults.module.scss'
 import { useEffect } from 'react'
-import Track from './Track'
-import Album from './Album'
+import Track from '../Track/Track'
+import Album from '../Album/Album'
+
 const SearchResults = ({ query, title, type }) => {
   const [results, setResults] = useState([])
   const [pagination, setPagination] = useState([0]) // offset
@@ -137,7 +138,7 @@ const SearchResults = ({ query, title, type }) => {
         <div className={classes.pagination}>
           {pagination.map((page, index) => {
             return (
-              <ResultPage
+              <ResultPageNumber
                 key={index}
                 pageNumber={index}
                 page={page}

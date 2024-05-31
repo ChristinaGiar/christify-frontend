@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import History from '../components/History'
+import History from '../components/History/History'
 import { useLazyGetLatestSongsQuery } from '../store/apiServices'
 import { isEmpty } from '../utils/functions'
 import { LATEST_SONGS_LENGTH } from '../utils/constants'
@@ -12,10 +12,9 @@ const Homepage = () => {
   return (
     <>
       <div>Homepage</div>
-      {!isEmpty(latestSongs.data) &&
-        latestSongs.isSuccess && ( //latestSongs.data?.length !== 0
-          <History lastSongs={latestSongs.data.slice(0, LATEST_SONGS_LENGTH)} />
-        )}
+      {!isEmpty(latestSongs.data) && latestSongs.isSuccess && (
+        <History lastSongs={latestSongs.data.slice(0, LATEST_SONGS_LENGTH)} />
+      )}
     </>
   )
 }

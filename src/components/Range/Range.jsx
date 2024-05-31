@@ -2,7 +2,6 @@ import { PropTypes } from 'prop-types'
 
 const Range = ({ rangeRef, audioRef, duration, timeProgress }) => {
   const rangeChangeHandler = () => {
-    console.log(rangeRef.current.value)
     audioRef.current.currentTime = rangeRef.current.value
   }
 

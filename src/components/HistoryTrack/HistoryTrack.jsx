@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { useState } from 'react'
-import { activeSongActions } from '../store/activeSong'
-import Square from '../layout/Square'
-import { setBrowsedType } from '../store/apiServices'
+import { activeSongActions } from '../../store/activeSong'
+import Square from '../../layout/Square/Square'
+import { setBrowsedType } from '../../store/controllers'
 
 const HistoryTrack = (props) => {
   const [isHovering, setIsHovering] = useState(false)
@@ -20,7 +20,6 @@ const HistoryTrack = (props) => {
 
   const handleClick = () => {
     const { album, ...track } = props
-    console.log('equal', props.song === activeSong.schema.song.song)
     if (
       activeSong.schema.song?.song &&
       props.song === activeSong.schema.song.song

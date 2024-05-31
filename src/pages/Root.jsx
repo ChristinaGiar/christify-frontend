@@ -1,19 +1,22 @@
-import { useNavigate, Outlet } from 'react-router-dom';
-import SongPlayer from '../components/SongPlayer';
+import { useNavigate, Outlet } from 'react-router-dom'
+import SongPlayer from '../components/SongPlayer/SongPlayer'
 const Root = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const goToSearchHandler = () => {
-    navigate('/search');
+    navigate('/search')
+  }
+  const goToHomePage = () => {
+    navigate('/')
   }
   return (
-      <>
+    <>
       <div>
-      <img src="" alt="Christify logo"/>
-      <div onClick={goToSearchHandler}>SearchIcon</div>
+        <div onClick={goToSearchHandler}>SearchIcon</div>
+        <img onClick={goToHomePage} src='' alt='Christify logo' />
       </div>
       <Outlet />
-      <SongPlayer/>
+      <SongPlayer />
     </>
   )
 }
