@@ -1,0 +1,23 @@
+@import '../../styles/variables.scss';
+
+.noResults {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  flex-direction: column;
+  height: 75vh;
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 1rem 0 0.3rem;
+  }
+
+  &__text {
+    font-size: 1.2rem;
+    color: rgba(white, 0.5);
+    margin: 0;
+  }
+}

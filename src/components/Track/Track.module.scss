@@ -1,0 +1,75 @@
+@import '../../styles/variables.scss';
+
+.active {
+  color: $active-color;
+  font-weight: 600;
+}
+.circle {
+  border-radius: 14px;
+}
+
+.square {
+  border-radius: 2px;
+}
+
+.track {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.1s ease-in;
+  margin: 0 0.4rem;
+  width: calc(100% - 0.8rem);
+  box-sizing: border-box;
+  border-radius: 14px;
+
+  &:hover {
+    background-color: $dark-grey-color;
+    .track__album,
+    .track__noAudio {
+      color: white;
+    }
+  }
+
+  &__image {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    flex-basis: 40px;
+  }
+
+  &__mainTitle {
+    flex-basis: 40%;
+  }
+
+  &__name {
+    font-weight: 500;
+  }
+
+  &__playIcon {
+    flex-basis: 15%;
+    color: transparent;
+    &.active {
+      color: $active-color;
+    }
+  }
+  &__album {
+    flex-basis: 30%;
+    font-size: 0.9rem;
+    color: $grey-color;
+    font-weight: 400;
+  }
+
+  &__noAudio {
+    flex-basis: 10%;
+    font-style: italic;
+  }
+
+  &__artists,
+  &__album,
+  &__noAudio {
+    font-size: 0.9rem;
+    color: $grey-color;
+    font-weight: 400;
+  }
+}

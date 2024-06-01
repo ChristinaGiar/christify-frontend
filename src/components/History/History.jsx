@@ -1,13 +1,18 @@
-import HistoryTrack from '../HistoryTrack/HistoryTrack'
 import { PropTypes } from 'prop-types'
+import Track from '../Track/Track'
+import styles from './History.module.scss'
 
 const History = ({ lastSongs }) => {
   return (
     <>
       <h3 className='categoryTitle'>You listened lately</h3>
-      <div>
+      <div className={styles.tableTitles}>
+        <h5 className={styles.tableTitle__name}>Name</h5>
+        <h5 className={styles.tableTitle__album}>Album</h5>
+      </div>
+      <div className={styles.table}>
         {lastSongs.map((track) => (
-          <HistoryTrack
+          <Track
             key={track.trackID}
             name={track.name}
             trackID={track.trackID}
@@ -15,6 +20,7 @@ const History = ({ lastSongs }) => {
             image={track.image}
             song={track.song}
             album={track.album}
+            type='history'
           />
         ))}
       </div>

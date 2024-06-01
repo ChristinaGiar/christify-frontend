@@ -6,10 +6,26 @@ import { useEffect } from 'react'
 import Track from '../Track/Track'
 import Album from '../Album/Album'
 
-const SearchResults = ({ query, title, type }) => {
+const SearchResults = ({ query, title, type, areResultsFound }) => {
   const [results, setResults] = useState([])
   const [pagination, setPagination] = useState([0]) // offset
   const [activeOffset, setActiveOffset] = useState(-1)
+
+  useEffect(() => {
+    const typingTimer = setTimeout(() => {
+      if (results.length > 0) {
+        areResultsFound({ type: type, found: true })
+      } else if (
+        results.length === 0 &&
+        query.length >= 3 &&
+        activeOffset !== -1
+      ) {
+        areResultsFound({ type: type, found: false })
+      }
+      console.log('CHANGE', query)
+    }, 500)
+    return () => clearTimeout(typingTimer)
+  }, [results, query])
 
   useEffect(() => {
     const typingTimer = setTimeout(() => {
@@ -21,7 +37,7 @@ const SearchResults = ({ query, title, type }) => {
       }
     }, 500)
     return () => clearTimeout(typingTimer)
-  }, [query]) //inputRef.current?.value
+  }, [query])
 
   useEffect(() => {
     if (activeOffset !== -1) {
@@ -52,6 +68,7 @@ const SearchResults = ({ query, title, type }) => {
 
   const searchInit = async (value, offset = 0) => {
     const urlPath = getUrlPath()
+
     const searchOutput = await fetch(
       `http://localhost:3000/${urlPath}?q=${value}&offset=${offset}&limit=10`,
       {
@@ -59,12 +76,12 @@ const SearchResults = ({ query, title, type }) => {
         headers: { 'Content-Type': 'application/json' },
       }
     )
+
     const { total, ...output } = await searchOutput.json()
     setResults(() => {
       return output.foundAlbums || output.foundTracks
     })
     setActiveOffset(offset)
-
     setPagination(() => {
       let pages = []
       const totalPages = Math.ceil(total / 10)
@@ -75,6 +92,7 @@ const SearchResults = ({ query, title, type }) => {
         if (newOffset === offset) {
           active = true
         }
+
         pages.push({ pageOffset: newOffset, active })
       }
       return pages
@@ -96,6 +114,7 @@ const SearchResults = ({ query, title, type }) => {
       searchInit(query, activeOffset - 10)
     }
   }
+
   const searchItems = () => {
     switch (type) {
       case 'albums':
@@ -154,29 +173,13 @@ const SearchResults = ({ query, title, type }) => {
     )
   }
 
-  const resultsNotFound = () => {
-    return (
-      <h3>
-        No results found for &quot;{query}&quot; Please check your search again.{' '}
-      </h3>
-    )
-  }
-
-  return (
-    <>
-      <div className='classes.searchBox'></div>
-      {results.length > 0 && resultsFound()}
-      {results.length === 0 &&
-        query.length > 5 &&
-        activeOffset !== -1 &&
-        resultsNotFound()}
-    </>
-  )
+  return <>{results.length > 0 && resultsFound()}</>
 }
 
 SearchResults.propTypes = {
   title: PropTypes.string,
   query: PropTypes.string,
   type: PropTypes.string,
+  areResultsFound: PropTypes.func,
 }
 export default SearchResults

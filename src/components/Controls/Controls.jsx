@@ -10,6 +10,13 @@ import {
 import { setBrowsedType } from '../../store/controllers'
 import { useState } from 'react'
 import { LATEST_SONGS_LENGTH } from '../../utils/constants'
+import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
+import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
+import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded'
+import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded'
+import Forward10RoundedIcon from '@mui/icons-material/Forward10Rounded'
+import Replay10RoundedIcon from '@mui/icons-material/Replay10Rounded'
+import styles from './Control.module.scss'
 
 const Controls = ({
   audioRef,
@@ -335,18 +342,30 @@ const Controls = ({
 
   return (
     <>
-      <button onClick={handlePrevious}>Previous</button>
-      <button onClick={handleSkipBackward}>handleSkipForward</button>
+      <button onClick={handlePrevious}>
+        <SkipPreviousRoundedIcon sx={{ fontSize: '1.8rem' }} />
+      </button>
+      <button onClick={handleSkipBackward}>
+        <Replay10RoundedIcon sx={{ fontSize: '1.8rem' }} />
+      </button>
       <div onClick={handleTogglePlay}>
         {activeSong.schema.isPlaying ? (
-          <button>Pause</button>
+          <button>
+            <PauseCircleOutlineRoundedIcon
+              sx={{ fontSize: '2rem', color: '#4fc1ff' }}
+            />
+          </button>
         ) : (
-          <button>Play</button>
+          <button>
+            <PlayCircleOutlineRoundedIcon sx={{ fontSize: '2rem' }} />
+          </button>
         )}
       </div>
-      <button onClick={handleSkipForward}>handleSkipForward</button>
+      <button onClick={handleSkipForward}>
+        <Forward10RoundedIcon sx={{ fontSize: '1.8rem' }} />
+      </button>
       <button ref={nextRef} onClick={handleNext}>
-        Next
+        <SkipNextRoundedIcon sx={{ fontSize: '1.8rem' }} />
       </button>
     </>
   )

@@ -1,0 +1,34 @@
+@import '../../styles/variables.scss';
+
+.search {
+  position: relative;
+  &__input {
+    div {
+      color: white;
+      border-radius: 34px;
+      box-sizing: border-box;
+
+      &.Mui-focused {
+        border: 2px solid red;
+      }
+
+      input {
+        border: 2px solid white;
+        border-radius: 34px;
+        padding: 1rem 2.8rem 1rem 1rem;
+
+        &:focus {
+          border: 2px solid $light-blue-color;
+        }
+      }
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+}

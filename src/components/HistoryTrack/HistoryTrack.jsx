@@ -1,22 +1,12 @@
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
 import { activeSongActions } from '../../store/activeSong'
 import Square from '../../layout/Square/Square'
 import { setBrowsedType } from '../../store/controllers'
-
+// NOT USED
 const HistoryTrack = (props) => {
-  const [isHovering, setIsHovering] = useState(false)
   const activeSong = useSelector((state) => state.activeSong)
   const dispatch = useDispatch()
-
-  const handleMouseOver = () => {
-    setIsHovering(true)
-  }
-
-  const handleMouseOut = () => {
-    setIsHovering(false)
-  }
 
   const handleClick = () => {
     const { album, ...track } = props
@@ -36,7 +26,6 @@ const HistoryTrack = (props) => {
           song: track,
         })
       )
-      // triggerLatestSong(props)
       dispatch(
         setBrowsedType({
           type: 'history-track',
@@ -46,12 +35,7 @@ const HistoryTrack = (props) => {
     }
   }
   return (
-    <div
-      onClick={handleClick}
-      className=''
-      //   onMouseOver={handleMouseOver}
-      //   onMouseOut={handleMouseOut}
-    >
+    <div onClick={handleClick} className=''>
       <Square
         name={props.name}
         trackID={props.trackID}
@@ -61,7 +45,6 @@ const HistoryTrack = (props) => {
         album={props.album}
         isActive={activeSong.schema.song.song == props.song}
       />
-      {isHovering && 'Play'}
       ----------------------------------------------------------------------------------------------------------
     </div>
   )

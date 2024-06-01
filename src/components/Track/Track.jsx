@@ -2,12 +2,12 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { activeSongActions } from '../../store/activeSong'
 import { setBrowsedType } from '../../store/controllers'
-
+import styles from './Track.module.scss'
 import { usePostLatestSongMutation } from '../../store/apiServices'
+import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded'
 
 const Track = (props) => {
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
-  // const [isActive, setIsActive] = useState(false)
   const activeSong = useSelector((state) => state.activeSong)
   const dispatch = useDispatch()
   const isActive = activeSong.schema.song.trackID === props.trackID
@@ -15,75 +15,97 @@ const Track = (props) => {
   const handleClick = () => {
     const { album, ...track } = props
 
-    /* if (
-      activeSong.schema.song?.song &&
-      props.song === activeSong.schema.song.song
-    ) {
-      dispatch(
-        activeSongActions.setReplayed({
-          replayed: true,
-        })
-      )
-    } else { */
     dispatch(
       activeSongActions.setActiveSong({
         album: album,
         song: track,
       })
     )
-    if (props.type === 'track') {
-      // add track to browsedTracks
-      dispatch(
-        setBrowsedType({
-          type: 'track-first',
-          track: props,
-          album: {}, // erase irrevelant data
-        })
-      )
-    } else if (props.type === 'album') {
-      dispatch(
-        setBrowsedType({
-          type: 'album',
-          albumTrigger: true,
-          browsedTracks: [], // erase irrevelant data
-        })
-      )
+    switch (props.type) {
+      case 'track':
+        // add track to browsedTracks
+        dispatch(
+          setBrowsedType({
+            type: 'track-first',
+            track: props,
+            album: {}, // erase irrevelant data
+          })
+        )
+        break
+      case 'album':
+        dispatch(
+          setBrowsedType({
+            type: 'album',
+            albumTrigger: true,
+            browsedTracks: [], // erase irrevelant data
+          })
+        )
+        break
+      case 'history':
+        dispatch(
+          activeSongActions.setActiveSong({
+            album: album,
+            song: track,
+          })
+        )
+        dispatch(
+          setBrowsedType({
+            type: 'history-track',
+            track: props,
+          })
+        )
+        break
+      default:
+        break
     }
+
     if (
       activeSong.schema.song?.song &&
       props.song !== activeSong.schema.song.song
     ) {
       triggerLatestSong(props)
-    } else {
+    } else if (props.type === 'track' || props.type === 'album') {
+      // and same song replayed
       dispatch(
         activeSongActions.setReplayed({
           replayed: true,
         })
       )
     }
-    /* } */
   }
   return (
-    <div
-      style={{ border: isActive && '1px solid white' }}
-      onClick={props.song && handleClick}
-    >
-      -------------------------------------------------------------------------
-      {props.image && <img width='30' height='30' src={props.image} />}
-      <div>{props.name}</div>
-      <div>{props.song}</div>
-      {props.artists && (
-        <div>
-          {props.artists.reduce((acc, artist) => {
-            if (props.artists[0] == artist) {
-              return artist.name
-            }
-            return acc + ', ' + artist.name
-          }, '')}
-        </div>
+    <div className={styles.track} onClick={props.song && handleClick}>
+      {props.image && (
+        <img
+          className={`${styles.track__image} ${
+            props.type === 'history' ? styles.square : styles.circle
+          }`}
+          src={props.image}
+        />
       )}
-      {!props.song && <div>No audio</div>}
-      -------------------------------------------------------------------------
+      <div
+        className={`${isActive && styles.active} ${styles.track__mainTitle}`}
+      >
+        <div className={styles.track__name}>{props.name}</div>
+        <div className={styles.track__artists}>
+          {props.artists
+            ? props.artists.reduce((acc, artist) => {
+                if (props.artists[0] == artist) {
+                  return artist.name
+                }
+                return acc + ', ' + artist.name
+              }, '')
+            : '-'}
+        </div>
+      </div>
+
+      <PlayCircleFilledRoundedIcon
+        className={`${isActive && styles.active} ${styles.track__playIcon}`}
+      />
+
+      <div className={styles.track__album}>{props.album.albumName}</div>
+
+      {!props.song && <div className={styles.track__noAudio}>No audio</div>}
     </div>
   )
 }

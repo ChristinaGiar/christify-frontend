@@ -11,7 +11,10 @@ const Homepage = () => {
   }, [])
   return (
     <>
-      <div>Homepage</div>
+      <div>
+        BANNER: <b>Unlimited</b> music for <b>FREE</b>
+      </div>
+      {/* TODO: Top Rated lately songs */}
       {!isEmpty(latestSongs.data) && latestSongs.isSuccess && (
         <History lastSongs={latestSongs.data.slice(0, LATEST_SONGS_LENGTH)} />
       )}

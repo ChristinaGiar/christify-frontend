@@ -1,0 +1,22 @@
+@import '../../styles/variables.scss';
+
+.tableTitles {
+  display: flex;
+  padding: 0.4rem 1rem;
+  margin: 0 0.4rem;
+  width: calc(100% - 0.8rem);
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(white, 0.3);
+  h5 {
+    margin: 0;
+  }
+  .tableTitle {
+    margin: 0;
+    &__name {
+      flex-basis: calc(40% + 15% + 1rem + 40px);
+    }
+    &__album {
+      flex-basis: 30%;
+    }
+  }
+}

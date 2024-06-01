@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded'
+
 const Volume = ({ audioRef }) => {
   const [volume, setVolume] = useState(70)
 
@@ -9,16 +11,19 @@ const Volume = ({ audioRef }) => {
     }
   }, [volume, audioRef])
   return (
-    <input
-      type='range'
-      min={0}
-      max={100}
-      value={volume}
-      onChange={(e) => setVolume(e.target.value)}
-      style={{
-        background: `linear-gradient(to right, #f50 ${volume}%, #ccc ${volume}%)`,
-      }}
-    />
+    <>
+      <VolumeUpRoundedIcon />
+      <input
+        type='range'
+        min={0}
+        max={100}
+        value={volume}
+        onChange={(e) => setVolume(e.target.value)}
+        style={{
+          background: `linear-gradient(to right, #f50 ${volume}%, #ccc ${volume}%)`,
+        }}
+      />
+    </>
   )
 }
 
