@@ -74,7 +74,13 @@ const Track = (props) => {
     }
   }
   return (
-    <div className={styles.track} onClick={props.song && handleClick}>
+    <div
+      className={`${!props.song && styles.disabled} ${styles.track}`}
+      onClick={props.song && handleClick}
+    >
+      {(props.type === 'track' || props.type === 'album') && (
+        <div className={styles.track__number}>{props?.number}</div>
+      )}
       {props.image && (
         <img
           className={`${styles.track__image} ${
@@ -86,8 +92,8 @@ const Track = (props) => {
       <div
         className={`${isActive && styles.active} ${styles.track__mainTitle}`}
       >
-        <div className={styles.track__name}>{props.name}</div>
-        <div className={styles.track__artists}>
+        <h5 className={styles.track__title}>{props.name}</h5>
+        <p className={styles.track__artists}>
           {props.artists
             ? props.artists.reduce((acc, artist) => {
                 if (props.artists[0] == artist) {
@@ -96,16 +102,13 @@ const Track = (props) => {
                 return acc + ', ' + artist.name
               }, '')
             : '-'}
-        </div>
+        </p>
       </div>
-
       <PlayCircleFilledRoundedIcon
         className={`${isActive && styles.active} ${styles.track__playIcon}`}
       />
-
-      <div className={styles.track__album}>{props.album.albumName}</div>
-
-      {!props.song && <div className={styles.track__noAudio}>No audio</div>}
+      <p className={styles.track__album}>{props.album.albumName}</p>
+      <div className={styles.track__noAudio}> {!props.song && 'No audio'}</div>
     </div>
   )
 }
@@ -118,6 +121,7 @@ Track.propTypes = {
   image: PropTypes.string,
   type: PropTypes.string,
   song: PropTypes.string,
+  number: PropTypes.number,
   browsedType: PropTypes.string,
 }
 export default Track

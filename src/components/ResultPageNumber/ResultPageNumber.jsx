@@ -1,17 +1,18 @@
 import PropTypes from 'prop-types'
-import classes from './ResultPageNumber.module.scss'
+import styles from './ResultPageNumber.module.scss'
 
 const ResultPageNumber = (props) => {
-  const isActive = props.page.active ? classes.active : ''
-  const isShown = props.page.shown ? classes.shown : ''
+  const isActive = props.page.active ? styles.active : ''
+  const isShown = props.page.shown ? styles.shown : ''
+
   return (
-    <span
-      className={`${classes.pageNumber} ${isActive} ${isShown}`}
+    <div
+      className={`${styles.pageNumber} ${isActive} ${isShown}`}
       onClick={props.clickHandler}
     >
       {' '}
       {+props.pageNumber + 1}{' '}
-    </span>
+    </div>
   )
 }
 

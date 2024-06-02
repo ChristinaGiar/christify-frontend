@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import ResultPageNumber from '../ResultPageNumber/ResultPageNumber'
 import PropTypes from 'prop-types'
-import classes from './SearchResults.module.scss'
+import styles from './SearchResults.module.scss'
 import { useEffect } from 'react'
 import Track from '../Track/Track'
 import Album from '../Album/Album'
+import { Grid } from '@mui/material'
+import { RESULTS_LENGTH, CLICKABLE_PAGES_NUMBER } from '../../utils/constants'
+import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
+import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded'
 
 const SearchResults = ({ query, title, type, areResultsFound }) => {
   const [results, setResults] = useState([])
@@ -22,7 +26,6 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
       ) {
         areResultsFound({ type: type, found: false })
       }
-      console.log('CHANGE', query)
     }, 500)
     return () => clearTimeout(typingTimer)
   }, [results, query])
@@ -44,8 +47,8 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
       setPagination((prevPagination) =>
         prevPagination.map((offset, pageNumber) => {
           if (
-            activeOffset / 10 <= pageNumber &&
-            activeOffset / 10 + 5 > pageNumber
+            activeOffset / RESULTS_LENGTH <= pageNumber &&
+            activeOffset / RESULTS_LENGTH + CLICKABLE_PAGES_NUMBER > pageNumber
           ) {
             return { ...offset, shown: true }
           }
@@ -70,7 +73,7 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
     const urlPath = getUrlPath()
 
     const searchOutput = await fetch(
-      `http://localhost:3000/${urlPath}?q=${value}&offset=${offset}&limit=10`,
+      `http://localhost:3000/${urlPath}?q=${value}&offset=${offset}&limit=${RESULTS_LENGTH}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -84,9 +87,9 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
     setActiveOffset(offset)
     setPagination(() => {
       let pages = []
-      const totalPages = Math.ceil(total / 10)
+      const totalPages = Math.ceil(total / RESULTS_LENGTH)
       for (let page = 0; page < totalPages; page++) {
-        const newOffset = page * 10
+        const newOffset = page * RESULTS_LENGTH
         let active = false
 
         if (newOffset === offset) {
@@ -104,43 +107,64 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
   }
 
   const nextHandler = () => {
-    if (pagination.length > activeOffset / 10 + 1) {
-      searchInit(query, activeOffset + 10)
+    if (pagination.length > activeOffset / RESULTS_LENGTH + 1) {
+      searchInit(query, activeOffset + RESULTS_LENGTH)
     }
   }
 
   const previousHandler = () => {
-    if (activeOffset / 10 - 1 >= 0) {
-      searchInit(query, activeOffset - 10)
+    if (activeOffset / RESULTS_LENGTH - 1 >= 0) {
+      searchInit(query, activeOffset - RESULTS_LENGTH)
     }
   }
 
   const searchItems = () => {
     switch (type) {
       case 'albums':
-        return results.map((item) => (
-          <Album
-            key={item.albumID}
-            name={item.name}
-            albumID={item.albumID}
-            artists={item.artists}
-            image={item.image?.url}
-            type='album'
-          />
-        ))
+        return (
+          <Grid
+            container
+            rowSpacing={{ xs: 1 }}
+            columnSpacing={{ xs: 1, sm: 0.5 }}
+          >
+            {results.map((item) => (
+              <Grid item xs={6} md={3} key={item.albumID}>
+                <Album
+                  name={item.name}
+                  albumID={item.albumID}
+                  artists={item.artists}
+                  image={item.image?.url}
+                  type='album'
+                />
+              </Grid>
+            ))}
+          </Grid>
+        )
+
       case 'tracks':
-        return results.map((item) => (
-          <Track
-            key={item.trackID}
-            name={item.name}
-            trackID={item.trackID}
-            artists={item.artists}
-            image={item.image?.url}
-            song={item.song}
-            album={item.album}
-            type='track'
-          />
-        ))
+        return (
+          <>
+            <div className={styles.tableTitles}>
+              <h5 className={styles.tableTitle__number}>#</h5>
+              <h5 className={styles.tableTitle__title}>Title</h5>
+              <h5 className={styles.tableTitle__album}>Album</h5>
+              <h5 className={styles.tableTitle__details}></h5>
+            </div>
+            {results.map((item, index) => (
+              <Track
+                key={item.trackID}
+                name={item.name}
+                trackID={item.trackID}
+                artists={item.artists}
+                image={item.image?.url}
+                song={item.song}
+                album={item.album}
+                number={+activeOffset + index + 1}
+                type='track'
+              />
+            ))}
+          </>
+        )
       default:
         return ''
     }
@@ -149,26 +173,31 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
   const resultsFound = () => {
     return (
       <>
-        <h3>{title}</h3>
+        <h3 className='categoryTitle'>{title}</h3>
         {searchItems()}
-        <button className='' onClick={previousHandler}>
-          &larr;
-        </button>
-        <div className={classes.pagination}>
-          {pagination.map((page, index) => {
-            return (
-              <ResultPageNumber
-                key={index}
-                pageNumber={index}
-                page={page}
-                clickHandler={() => changePageHandler(page.pageOffset)}
-              />
-            )
-          })}
+        <div className={styles.pagination}>
+          <button
+            className={styles.pagination__button}
+            onClick={previousHandler}
+          >
+            <ArrowBackIosNewRoundedIcon sx={{ fontSize: '.8rem' }} />
+          </button>
+          <div>
+            {pagination.map((page, index) => {
+              return (
+                <ResultPageNumber
+                  key={index}
+                  pageNumber={index}
+                  page={page}
+                  clickHandler={() => changePageHandler(page.pageOffset)}
+                />
+              )
+            })}
+          </div>
+          <button className={styles.pagination__button} onClick={nextHandler}>
+            <ArrowForwardIosRoundedIcon sx={{ fontSize: '.8rem' }} />
+          </button>
         </div>
-        <button className='' onClick={nextHandler}>
-          &rarr;
-        </button>
       </>
     )
   }

@@ -1,0 +1,58 @@
+@import '../../styles/variables.scss';
+
+.album {
+  border-radius: 14px;
+  padding: 0.5rem 0.5rem 1rem;
+  height: 100%;
+  transition: background-color 0.1s ease-in;
+
+  &:hover {
+    background-color: $dark-grey-color;
+  }
+
+  &__imageWrapper {
+    position: relative;
+
+    &:hover {
+      .album__playIcon {
+        bottom: 20px;
+        opacity: 1;
+      }
+    }
+
+    .album__playIcon {
+      color: $light-blue-color;
+      position: absolute;
+      bottom: 15px;
+      right: 10px;
+      background: radial-gradient(
+        black 0%,
+        black 50%,
+        $light-blue-color 50%,
+        $light-blue-color 100%
+      );
+      border-radius: 20px;
+      opacity: 0;
+      box-shadow: rgba(black, 0.4) 0 2px 4px 0;
+      transition: bottom 0.1s ease-out;
+    }
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 1rem;
+    color: white;
+  }
+
+  &__artists {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: $grey-color;
+  }
+}

@@ -1,5 +1,49 @@
+@import '../../styles/variables.scss';
+
 .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin: 1rem 0 2rem;
+
+  &__button {
+    border-radius: 14px;
+    width: 28px;
+    height: 28px;
+    padding: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    background-color: rgba(white, 0.2);
+
+    &:hover {
+      border: none;
+      background-color: rgba(white, 0.1);
+    }
+  }
+}
+
+.tableTitles {
+  display: flex;
+  padding: 0.4rem 1rem;
+  margin: 0 0.4rem;
+  width: calc(100% - 0.8rem);
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(white, 0.3);
+
+  .tableTitle {
+    &__number {
+      flex-basis: 7%;
+    }
+    &__title {
+      flex-basis: calc(40% + 15% + 1rem + 40px);
+    }
+    &__album {
+      flex-basis: 30%;
+    }
+    &__details {
+      flex-basis: calc(10%);
+    }
+  }
 }

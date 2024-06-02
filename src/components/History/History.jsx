@@ -7,7 +7,7 @@ const History = ({ lastSongs }) => {
     <>
       <h3 className='categoryTitle'>You listened lately</h3>
       <div className={styles.tableTitles}>
-        <h5 className={styles.tableTitle__name}>Name</h5>
+        <h5 className={styles.tableTitle__name}>Title</h5>
         <h5 className={styles.tableTitle__album}>Album</h5>
       </div>
       <div className={styles.table}>
