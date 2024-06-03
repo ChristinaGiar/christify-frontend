@@ -5,6 +5,7 @@ import { setBrowsedType } from '../../store/controllers'
 import styles from './Track.module.scss'
 import { usePostLatestSongMutation } from '../../store/apiServices'
 import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded'
+import { artistsArrayToString } from '../../utils/functions'
 
 const Track = (props) => {
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
@@ -59,18 +60,20 @@ const Track = (props) => {
         break
     }
 
-    if (
-      activeSong.schema.song?.song &&
-      props.song !== activeSong.schema.song.song
-    ) {
-      triggerLatestSong(props)
-    } else if (props.type === 'track' || props.type === 'album') {
-      // and same song replayed
-      dispatch(
-        activeSongActions.setReplayed({
-          replayed: true,
-        })
-      )
+    if (activeSong.schema.song?.song && props.type !== 'history') {
+      if (props.song !== activeSong.schema.song.song) {
+        console.log('IS PLAYING')
+        triggerLatestSong(props)
+      } else if (props.type === 'track' || props.type === 'album') {
+        // and same song replayed
+        console.log('IS REPLAYING')
+
+        dispatch(
+          activeSongActions.setReplayed({
+            replayed: true,
+          })
+        )
+      }
     }
   }
   return (
@@ -94,14 +97,7 @@ const Track = (props) => {
       >
         <h5 className={styles.track__title}>{props.name}</h5>
         <p className={styles.track__artists}>
-          {props.artists
-            ? props.artists.reduce((acc, artist) => {
-                if (props.artists[0] == artist) {
-                  return artist.name
-                }
-                return acc + ', ' + artist.name
-              }, '')
-            : '-'}
+          {props.artists ? artistsArrayToString(props.artists) : '-'}
         </p>
       </div>
       <PlayCircleFilledRoundedIcon

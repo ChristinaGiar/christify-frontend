@@ -1,4 +1,5 @@
 import { PropTypes } from 'prop-types'
+import styles from './Range.module.scss'
 
 const Range = ({ rangeRef, audioRef, duration, timeProgress }) => {
   const rangeChangeHandler = () => {
@@ -17,16 +18,17 @@ const Range = ({ rangeRef, audioRef, duration, timeProgress }) => {
     return `00:00`
   }
   return (
-    <>
-      <span> {formatTime(timeProgress)}</span>
+    <div className={styles.range}>
+      <span className={styles.range__time}> {formatTime(timeProgress)}</span>
       <input
         type='range'
         ref={rangeRef}
         defaultValue='0'
         onChange={rangeChangeHandler}
+        className={styles.range__bar}
       />
-      <span className='time'>{formatTime(duration)}</span>
-    </>
+      <span className={styles.range__time}>{formatTime(duration)}</span>
+    </div>
   )
 }
 

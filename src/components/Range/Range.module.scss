@@ -1,0 +1,14 @@
+.range {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input[type='range'] {
+    // firefox
+    background: linear-gradient(
+      to right,
+      #4fc1ff var(--range-progress),
+      #ccc var(--range-progress)
+    );
+  }
+}

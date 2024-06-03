@@ -9,3 +9,12 @@ export const isEmptyObject = (value) => {
     typeof val === 'object' ? isEmptyObject(val) : !val
   )
 }
+
+export const artistsArrayToString = (array) => {
+  return array.reduce((acc, artist) => {
+    if (array[0] == artist) {
+      return artist.name
+    }
+    return acc + ', ' + artist.name
+  }, '')
+}

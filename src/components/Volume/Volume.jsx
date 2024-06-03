@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded'
 
 const Volume = ({ audioRef }) => {
-  const [volume, setVolume] = useState(70)
+  const [volume, setVolume] = useState(50)
 
   useEffect(() => {
     if (audioRef.current) {
@@ -20,7 +20,7 @@ const Volume = ({ audioRef }) => {
         value={volume}
         onChange={(e) => setVolume(e.target.value)}
         style={{
-          background: `linear-gradient(to right, #f50 ${volume}%, #ccc ${volume}%)`,
+          background: `linear-gradient(to right, #4fc1ff ${volume}%, #ccc ${volume}%)`,
         }}
       />
     </>

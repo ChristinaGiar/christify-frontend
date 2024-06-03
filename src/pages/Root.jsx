@@ -3,6 +3,7 @@ import SongPlayer from '../components/SongPlayer/SongPlayer'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import styles from './Pages.module.scss'
+import logoImage from '../assets/christify-logo.png'
 const Root = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -24,30 +25,31 @@ const Root = () => {
             <img
               className={styles.logo__image}
               onClick={goToHomePage}
-              src=''
+              src={logoImage}
               alt='Christify logo'
             />
             <div className={styles.logo__text}>Christify</div>
           </div>
+          <div className={styles.sidebar__links}>
+            <div
+              className={`${pathname === '/' && styles.active} ${
+                styles.sidebar__link
+              }`}
+              onClick={goToHomePage}
+              role='button'
+            >
+              <HomeRoundedIcon /> Home
+            </div>
 
-          <div
-            className={`${pathname === '/' && styles.active} ${
-              styles.sidebar__link
-            }`}
-            onClick={goToHomePage}
-            role='button'
-          >
-            <HomeRoundedIcon /> Home
-          </div>
-
-          <div
-            className={`${pathname === '/search' && styles.active} ${
-              styles.sidebar__link
-            }`}
-            onClick={goToSearchHandler}
-            role='button'
-          >
-            <SearchRoundedIcon /> Search
+            <div
+              className={`${pathname === '/search' && styles.active} ${
+                styles.sidebar__link
+              }`}
+              onClick={goToSearchHandler}
+              role='button'
+            >
+              <SearchRoundedIcon /> Search
+            </div>
           </div>
         </div>
 

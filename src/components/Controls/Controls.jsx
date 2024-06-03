@@ -35,6 +35,7 @@ const Controls = ({
   const nextRef = useRef(null)
   const [triggerLatestSongs, latestSongs] = useLazyGetLatestSongsQuery()
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
+
   const repeat = useCallback(() => {
     const currentTime = audioRef.current.currentTime
     setTimeProgress(currentTime)
@@ -341,7 +342,7 @@ const Controls = ({
   }
 
   return (
-    <>
+    <div className={styles.controls}>
       <button onClick={handlePrevious}>
         <SkipPreviousRoundedIcon sx={{ fontSize: '1.8rem' }} />
       </button>
@@ -352,12 +353,12 @@ const Controls = ({
         {activeSong.schema.isPlaying ? (
           <button>
             <PauseCircleOutlineRoundedIcon
-              sx={{ fontSize: '2rem', color: '#4fc1ff' }}
+              sx={{ fontSize: '2.3rem', color: '#4fc1ff' }}
             />
           </button>
         ) : (
           <button>
-            <PlayCircleOutlineRoundedIcon sx={{ fontSize: '2rem' }} />
+            <PlayCircleOutlineRoundedIcon sx={{ fontSize: '2.3rem' }} />
           </button>
         )}
       </div>
@@ -367,7 +368,7 @@ const Controls = ({
       <button ref={nextRef} onClick={handleNext}>
         <SkipNextRoundedIcon sx={{ fontSize: '1.8rem' }} />
       </button>
-    </>
+    </div>
   )
 }
 

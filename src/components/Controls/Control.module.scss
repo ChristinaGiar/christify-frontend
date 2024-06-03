@@ -1,3 +1,11 @@
-button {
-  padding: 0.2rem 0.4rem;
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.4rem;
+  margin-bottom: 0.5rem;
+
+  button {
+    padding: 0;
+  }
 }

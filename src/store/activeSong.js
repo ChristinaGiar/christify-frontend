@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialSongState = {
   schema: {
     album: {}, // album: albumID, albumName
-    song: {}, // played song's details: name, trackID, song
+    song: {}, // played song's details: artists, image, name, song, trackID, type
     isPlaying: false,
     replayed: false,
   },
@@ -18,6 +18,7 @@ const activeSongSlice = createSlice({
       state.schema.album = action.payload.album
       state.schema.isPlaying = true
       state.schema.replayed = false
+      console.log('action.payload', action.payload)
     },
     setPlayingMode(state, action) {
       state.schema.isPlaying = action.payload
