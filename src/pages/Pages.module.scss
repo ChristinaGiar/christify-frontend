@@ -233,3 +233,25 @@
     padding: 0rem 0.5rem;
   }
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: $dark-black-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__text {
+    font-size: 2rem;
+    text-align: center;
+    padding: 2rem;
+    @include respond(phone) {
+      font-size: 1rem;
+      padding: 1rem 0.5rem;
+    }
+  }
+}

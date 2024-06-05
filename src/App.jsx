@@ -57,7 +57,7 @@ const routesConfig = [
 const router = createBrowserRouter(routesConfig)
 
 const App = () => {
-  var timer = 0
+  /*   var timer = 0
 
   useEffect(() => {
     fetchAccessToken()
@@ -71,32 +71,20 @@ const App = () => {
     headers: { 'Content-Type': 'application/json' },
   }
 
-  const fetchAccessToken = async () => {
+   const fetchAccessToken = async () => {
     try {
       const expiresIn = await fetch('http://localhost:3000/access', requestInfo)
-      const expirationTime = await expiresIn.text()
 
+      const expirationTime = await expiresIn.text()
+      console.log('expirationTime', expirationTime)
       timer = setTimeout(() => {
         fetchAccessToken()
-      }, +expirationTime * 1000)
+      }, +expirationTime * 5) //10
     } catch (error) {
       console.log(error)
     }
-  }
+  } */
 
-  const fetchTrack = async () => {
-    const track = await fetch(
-      'http://localhost:3000/track?trackID=11dFghVXANMlKmJXsNCbNl',
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        // body: JSON.stringify(data),
-      }
-    )
-    console.log(await track.json())
-  }
   return (
     <Provider store={store}>
       <RouterProvider router={router} />

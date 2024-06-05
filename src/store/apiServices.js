@@ -43,6 +43,9 @@ export const apiServicesApi = createApi({
       )
       }, */
     }),
+    getAccessToken: builder.query({
+      query: () => ({ method: 'GET', url: 'access' }),
+    }),
   }),
 })
 
@@ -51,4 +54,5 @@ export const {
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
   useGetAlbumQuery,
+  useLazyGetAccessTokenQuery,
 } = apiServicesApi
