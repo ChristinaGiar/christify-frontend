@@ -13,17 +13,14 @@ function AlbumPage() {
   const dispatch = useDispatch()
   useEffect(() => {
     // check type of track for next, prev controllers & autoplay
-    console.log(albumID, album)
     isSuccess &&
       dispatch(
         setBrowsedType({
           type: 'album',
-          album: { albumID: albumID, tracks: album.tracks },
+          album: { ...album, albumID, artists: album.artists },
         })
       )
   })
-
-  // isSuccess && console.log('album', albumID, album)
 
   return (
     <>

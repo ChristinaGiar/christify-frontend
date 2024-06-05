@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import styles from './Album.module.scss'
 import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded'
+import { artistsArrayToString } from '../../utils/functions'
 
 const Album = (props) => {
   return (
@@ -16,12 +17,7 @@ const Album = (props) => {
         </div>
         <h5 className={styles.album__title}>{props.name}</h5>
         <p className={styles.album__artists}>
-          {props.artists.reduce((acc, artist) => {
-            if (props.artists[0] == artist) {
-              return artist.name
-            }
-            return acc + ', ' + artist.name
-          }, '')}
+          {props.artists ? artistsArrayToString(props.artists) : '-'}
         </p>
       </div>
     </Link>

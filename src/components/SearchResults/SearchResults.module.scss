@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
 
 .pagination {
   display: flex;
@@ -6,6 +7,9 @@
   align-items: center;
   gap: 1.5rem;
   margin: 1rem 0 2rem;
+  @include respond(phone) {
+    margin: 2rem 0;
+  }
 
   &__button {
     border-radius: 14px;
@@ -28,22 +32,27 @@
   display: flex;
   padding: 0.4rem 1rem;
   margin: 0 0.4rem;
-  width: calc(100% - 0.8rem);
+  width: calc(100% - 0.85rem);
   box-sizing: border-box;
   border-bottom: 1px solid rgba(white, 0.3);
+
+  @include respond(phone) {
+    padding: 0.4rem 0rem;
+    gap: 0.4rem;
+  }
 
   .tableTitle {
     &__number {
       flex-basis: 7%;
     }
     &__title {
-      flex-basis: calc(40% + 15% + 1rem + 40px);
+      flex-basis: calc(40% + 15% + 2.4rem + 40px);
     }
     &__album {
       flex-basis: 30%;
     }
     &__details {
-      flex-basis: calc(10%);
+      flex-basis: 10%;
     }
   }
 }

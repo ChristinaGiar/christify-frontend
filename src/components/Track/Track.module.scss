@@ -1,4 +1,5 @@
 @import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
 
 .active {
   color: $active-color;
@@ -23,9 +24,16 @@
   width: calc(100% - 0.8rem);
   box-sizing: border-box;
   border-radius: 20px;
+  @include respond(phone) {
+    padding: 0.3rem 0;
+    gap: 0.4rem;
+  }
 
   &:hover {
     background-color: $dark-grey-color;
+    @include respond(phone) {
+      background-color: transparent;
+    }
     .track__number,
     .track__album,
     .track__noAudio {
@@ -50,20 +58,45 @@
     height: 40px;
     margin-right: 1rem;
     flex-basis: 40px;
+    @include respond(phone) {
+      width: 35px;
+      height: 35px;
+      margin-right: 0.6rem;
+      flex-basis: 35px;
+    }
   }
 
   &__mainTitle {
     flex-basis: 40%;
+    @include respond(phone) {
+      flex-basis: 45%;
+    }
   }
 
   &__title {
     font-size: 1rem;
     font-weight: 600;
+    @include respond(phone) {
+      font-size: 0.9rem;
+    }
+  }
+
+  &__artists {
+    @include respond(phone) {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &__playIcon {
     flex-basis: 15%;
     color: transparent;
+    @include respond(phone) {
+      flex-basis: 10%;
+    }
     &.active {
       color: $active-color;
     }
@@ -74,6 +107,13 @@
     font-size: 0.9rem;
     color: $grey-color;
     font-weight: 400;
+    @include respond(phone) {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   &__noAudio {
@@ -88,5 +128,8 @@
     font-size: 0.9rem;
     color: $grey-color;
     font-weight: 400;
+    @include respond(phone) {
+      font-size: 0.85rem;
+    }
   }
 }

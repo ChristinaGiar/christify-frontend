@@ -17,6 +17,7 @@ import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded'
 import Forward10RoundedIcon from '@mui/icons-material/Forward10Rounded'
 import Replay10RoundedIcon from '@mui/icons-material/Replay10Rounded'
 import styles from './Control.module.scss'
+import { useEnter } from '../../utils/hooks'
 
 const Controls = ({
   audioRef,
@@ -26,13 +27,13 @@ const Controls = ({
   rangeRef,
 }) => {
   const dispatch = useDispatch()
-
   const activeSong = useSelector((state) => state.activeSong)
   const browsedType = useSelector((state) => state.controllers?.browsedType)
   const [isNextPressed, setIsNextPressed] = useState(false)
   const [isPrevPressed, setIsPrevPressed] = useState(false)
   const playAnimationRef = useRef()
   const nextRef = useRef(null)
+  const playRef = useRef(null)
   const [triggerLatestSongs, latestSongs] = useLazyGetLatestSongsQuery()
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
 
@@ -78,7 +79,8 @@ const Controls = ({
   }, [timeProgress, duration])
 
   useEffect(() => {
-    // handle album songs on autoplay / button clicked "Next" button
+    // album on autoplay / button clicked "Next" button
+
     if (
       isNextPressed &&
       browsedType.type === 'album' &&
@@ -98,6 +100,8 @@ const Controls = ({
             name: album.tracks[nextSongIdxAdapted].name,
             trackID: album.tracks[nextSongIdxAdapted].trackID,
             song: album.tracks[nextSongIdxAdapted].song,
+            image: album.tracks[nextSongIdxAdapted].image.url,
+            artists: album.artists,
           },
           album,
           isPlaying: activeSong.schema.isPlaying,
@@ -105,6 +109,7 @@ const Controls = ({
       ) */
       triggerLatestSong({
         ...album.tracks[nextSongIdxAdapted],
+        artists: album.artists,
         image: album.tracks[nextSongIdxAdapted].image.url,
       })
       setIsNextPressed(false)
@@ -112,6 +117,7 @@ const Controls = ({
   }, [isNextPressed, browsedType.type])
 
   useEffect(() => {
+    // tracks, history tracks on autoplay / button clicked "Prev", "Next" button
     if (latestSongs.isSuccess) {
       if (browsedType.type === 'track' || browsedType.type === 'track-first') {
         if (isPrevPressed) {
@@ -127,16 +133,18 @@ const Controls = ({
               })
             )
           } else {
-            const nextSongIdx = currentSongIdx - 1
-            setActiveSongAction(browsedType.browsedTracks, nextSongIdx)
+            const prevSongIdx = currentSongIdx - 1
+            setActiveSongAction(browsedType.browsedTracks, prevSongIdx)
             /* dispatch(
               activeSongActions.setActiveSong({
                 song: {
-                  name: browsedType.browsedTracks[nextSongIdx].name,
-                  trackID: browsedType.browsedTracks[nextSongIdx].trackID,
-                  song: browsedType.browsedTracks[nextSongIdx].song,
+                  name: browsedType.browsedTracks[prevSongIdx].name,
+                  trackID: browsedType.browsedTracks[prevSongIdx].trackID,
+                  song: browsedType.browsedTracks[prevSongIdx].song,
+                  image: browsedType.browsedTracks[prevSongIdx].image,
+                  artists: browsedType.browsedTracks[prevSongIdx].artists,
                 },
-                album: browsedType.browsedTracks[nextSongIdx].album,
+                album: browsedType.browsedTracks[prevSongIdx].album,
                 isPlaying: activeSong.schema.isPlaying,
               })
             ) */
@@ -152,12 +160,14 @@ const Controls = ({
             // if before last
             nextSongIdx = currentSongIdx + 1
             setActiveSongAction(browsedType.browsedTracks, nextSongIdx)
-            /*  dispatch(
+            /* dispatch(
               activeSongActions.setActiveSong({
                 song: {
                   name: browsedType.browsedTracks[nextSongIdx].name,
                   trackID: browsedType.browsedTracks[nextSongIdx].trackID,
                   song: browsedType.browsedTracks[nextSongIdx].song,
+                  image: browsedType.browsedTracks[nextSongIdx].image,
+                  artists: browsedType.browsedTracks[nextSongIdx].artists,
                 },
                 album: browsedType.browsedTracks[nextSongIdx].album,
                 isPlaying: activeSong.schema.isPlaying,
@@ -192,6 +202,8 @@ const Controls = ({
                     name: latestSongs.data[nextSongIdx].name,
                     trackID: latestSongs.data[nextSongIdx].trackID,
                     song: latestSongs.data[nextSongIdx].song,
+                    image: latestSongs.data[nextSongIdx].image,
+                    artists: latestSongs.data[nextSongIdx].artists,
                   },
                   album: latestSongs.data[nextSongIdx].album,
                   isPlaying: activeSong.schema.isPlaying,
@@ -210,7 +222,6 @@ const Controls = ({
           const currentSongIdx = latestSongs.data.findIndex(
             (track) => track.song === audioRef.current.src
           )
-
           if (currentSongIdx === 0) {
             dispatch(
               activeSongActions.setReplayed({
@@ -218,16 +229,18 @@ const Controls = ({
               })
             )
           } else {
-            const nextSongIdx = currentSongIdx - 1
-            setActiveSongAction(latestSongs.data, nextSongIdx)
+            const prevSongIdx = currentSongIdx - 1
+            setActiveSongAction(latestSongs.data, prevSongIdx)
             /* dispatch(
               activeSongActions.setActiveSong({
                 song: {
-                  name: latestSongs.data[nextSongIdx].name,
-                  trackID: latestSongs.data[nextSongIdx].trackID,
-                  song: latestSongs.data[nextSongIdx].song,
+                  name: latestSongs.data[prevSongIdx].name,
+                  trackID: latestSongs.data[prevSongIdx].trackID,
+                  song: latestSongs.data[prevSongIdx].song,
+                  image: latestSongs.data[prevSongIdx].image,
+                  artists: latestSongs.data[prevSongIdx].artists,
                 },
-                album: latestSongs.data[nextSongIdx].album,
+                album: latestSongs.data[prevSongIdx].album,
                 isPlaying: activeSong.schema.isPlaying,
               })
             ) */
@@ -251,6 +264,8 @@ const Controls = ({
                   name: latestSongs.data[nextSongIdx].name,
                   trackID: latestSongs.data[nextSongIdx].trackID,
                   song: latestSongs.data[nextSongIdx].song,
+                  image: latestSongs.data[nextSongIdx].image,
+                  artists: latestSongs.data[nextSongIdx].artists,
                 },
                 album: latestSongs.data[nextSongIdx].album,
                 isPlaying: activeSong.schema.isPlaying,
@@ -263,6 +278,17 @@ const Controls = ({
     }
   }, [latestSongs, isPrevPressed, isNextPressed])
 
+  const handleEnterKey = (event) => {
+    if (
+      event.keyCode === 32 &&
+      event.target.tagName.trim().toLowerCase() !== 'button' // don't affect button's behavior
+    ) {
+      event.preventDefault()
+      playRef.current.click()
+    }
+  }
+  useEnter((e) => handleEnterKey(e))
+
   const handleSkipForward = () => {
     audioRef.current.currentTime += 10
   }
@@ -274,7 +300,6 @@ const Controls = ({
   const handlePrevious = () => {
     if (browsedType.type === 'album' && browsedType.albumTrigger) {
       const album = browsedType.album
-
       const prevSongIdx = album.tracks.findIndex(
         (track) => track.trackID === activeSong.schema.song.trackID
       )
@@ -282,12 +307,14 @@ const Controls = ({
       if (prevSongIdx !== 0) {
         const prevSongIdxAdapted = prevSongIdx - 1
         setActiveSongAction(album.tracks, prevSongIdxAdapted, album)
-        /*         dispatch(
+        /* dispatch(
           activeSongActions.setActiveSong({
             song: {
               name: album.tracks[prevSongIdxAdapted].name,
               trackID: album.tracks[prevSongIdxAdapted].trackID,
               song: album.tracks[prevSongIdxAdapted].song,
+              image: album.tracks[prevSongIdxAdapted].image.url,
+              artists: album.artists,
             },
             album,
             isPlaying: activeSong.schema.isPlaying,
@@ -296,6 +323,7 @@ const Controls = ({
 
         triggerLatestSong({
           ...album.tracks[prevSongIdxAdapted],
+          artists: album.artists,
           image: album.tracks[prevSongIdxAdapted].image.url,
         })
       } else {
@@ -319,8 +347,10 @@ const Controls = ({
           name: songs[index].name,
           trackID: songs[index].trackID,
           song: songs[index].song,
+          image: songs[index].image?.url || songs[index].image,
+          artists: isEmptyObject(album) ? songs[index].artists : album.artists,
         },
-        album: isEmptyObject(album) ? album : songs[index].album,
+        album: isEmptyObject(album) ? songs[index].album : album,
         isPlaying: activeSong.schema.isPlaying,
       })
     )
@@ -349,7 +379,7 @@ const Controls = ({
       <button onClick={handleSkipBackward}>
         <Replay10RoundedIcon sx={{ fontSize: '1.8rem' }} />
       </button>
-      <div onClick={handleTogglePlay}>
+      <div ref={playRef} onClick={handleTogglePlay}>
         {activeSong.schema.isPlaying ? (
           <button>
             <PauseCircleOutlineRoundedIcon

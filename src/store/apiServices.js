@@ -1,8 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export const songsApi = createApi({
-  reducerPath: 'songs',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/songs/' }),
+export const apiServicesApi = createApi({
+  reducerPath: 'apiServices',
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'http://localhost:3000/',
+    prepareHeaders: (headers) => {
+      headers.set('Content-Type', 'application/json')
+    },
+  }),
   tagTypes: ['Songs'],
   endpoints: (builder) => ({
     getLatestSongs: builder.query({
@@ -15,7 +20,6 @@ export const songsApi = createApi({
             ]
           : { type: 'Songs', id: 'LIST' },
     }),
-
     postLatestSong: builder.mutation({
       query: (body) => ({
         url: 'addLatestSong',
@@ -29,15 +33,15 @@ export const songsApi = createApi({
         url: `album?albumID=${albumID}`,
         method: 'GET',
       }),
-      // async onQueryStarted(id, { dispatch, queryFulfilled }) {
-      //   const album = await queryFulfilled
-      // dispatch(
-      //   setBrowsedType({
-      //     type: 'album',
-      //     result: { albumID: album.data.albumID, tracks: album.data.tracks },
-      //   })
-      // )
-      // },
+      /* async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const album = await queryFulfilled
+      dispatch(
+        setBrowsedType({
+          type: 'album',
+          result: { albumID: album.data.albumID, tracks: album.data.tracks },
+        })
+      )
+      }, */
     }),
   }),
 })
@@ -47,4 +51,4 @@ export const {
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
   useGetAlbumQuery,
-} = songsApi
+} = apiServicesApi

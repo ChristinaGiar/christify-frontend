@@ -1,10 +1,12 @@
 @import '../../styles/variables.scss';
+@import '../../styles/mixins.scss';
 
 .songPlayer {
   width: 100vw;
   position: fixed;
   bottom: 0;
-  z-index: 100;
+  left: 0;
+  z-index: 110;
   background-color: $background-color;
   display: flex;
   align-items: center;
@@ -12,10 +14,92 @@
   padding: 1.2rem 1rem;
   gap: 3rem;
 
+  &.mobile {
+    bottom: unset;
+    top: calc(100vh - 51px);
+    z-index: 90;
+    padding-top: 4rem;
+
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    transition: all 0.4s ease-in-out;
+    background: linear-gradient(
+      to bottom,
+      $dark-grey-color,
+      $background-color 81%,
+      $background-color
+    );
+
+    &.show {
+      top: 0;
+      z-index: 110;
+
+      .details__image {
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+        flex-basis: 100%;
+        border-radius: 2px;
+        top: 4rem;
+        left: calc(50% - 150px);
+      }
+    }
+
+    .closeIcon {
+      display: inline-block;
+      position: absolute;
+      z-index: 120;
+      top: 20px;
+      right: 20px;
+    }
+
+    .details {
+      flex-direction: column;
+      &__image {
+        position: absolute;
+        width: 45px;
+        height: 45px;
+        left: 8px;
+        top: 3.2px;
+        transition: all 0.4s ease-in-out;
+      }
+
+      &__imagePlaceholder {
+        width: 300px;
+        height: 300px;
+        margin-bottom: 2rem;
+      }
+
+      &__title {
+        font-size: 1rem;
+      }
+
+      &__artists {
+        font-size: 0.9rem;
+      }
+    }
+    .audio {
+      margin-top: auto;
+      flex-basis: 100%;
+      width: 90%;
+    }
+
+    .volume {
+      flex-basis: 100%;
+    }
+  }
+
+  .closeIcon {
+    display: none;
+  }
+
   .details {
     display: flex;
     flex-basis: 30%;
     align-items: center;
+
     &__image {
       width: 60px;
       height: 60px;
@@ -23,6 +107,7 @@
       flex-basis: 40px;
       border-radius: 2px;
     }
+
     &__title {
       font-size: 1rem;
       font-weight: 600;

@@ -28,7 +28,7 @@ const SearchInput = () => {
   }
 
   return (
-    <>
+    <div className={styles.searchWrapper}>
       <div className={styles.search}>
         <TextField
           hiddenLabel
@@ -51,7 +51,7 @@ const SearchInput = () => {
       {!resultsFound['albums'].found && !resultsFound.tracks.found && (
         <NoResults query={query} />
       )}
-    </>
+    </div>
   )
 }
 

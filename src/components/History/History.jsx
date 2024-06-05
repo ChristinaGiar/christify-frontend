@@ -9,6 +9,7 @@ const History = ({ lastSongs }) => {
       <div className={styles.tableTitles}>
         <h5 className={styles.tableTitle__name}>Title</h5>
         <h5 className={styles.tableTitle__album}>Album</h5>
+        <h5 className={styles.tableTitle__details}></h5>
       </div>
       <div className={styles.table}>
         {lastSongs.map((track) => (
