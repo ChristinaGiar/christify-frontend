@@ -6,6 +6,7 @@
   border-radius: 14px;
   position: relative;
   z-index: 0;
+  cursor: pointer;
   @include respond(phone) {
     margin: 0 0.7rem;
     font-size: 0.9rem;

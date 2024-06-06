@@ -9,11 +9,17 @@ import { Grid } from '@mui/material'
 import { RESULTS_LENGTH, CLICKABLE_PAGES_NUMBER } from '../../utils/constants'
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded'
+import {
+  useLazyGetAlbumResultsQuery,
+  useLazyGetSongResultsQuery,
+} from '../../store/apiServices'
 
 const SearchResults = ({ query, title, type, areResultsFound }) => {
   const [results, setResults] = useState([])
-  const [pagination, setPagination] = useState([0]) // offset
+  const [pagination, setPagination] = useState([]) // pages' offset. Structure: {pageOffset: 0, active: true, shown: false}
   const [activeOffset, setActiveOffset] = useState(-1)
+  const [triggerSongResults, songResults] = useLazyGetSongResultsQuery()
+  const [triggerAlbumResults, albumResults] = useLazyGetAlbumResultsQuery()
 
   useEffect(() => {
     const typingTimer = setTimeout(() => {
@@ -34,7 +40,8 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
     const typingTimer = setTimeout(() => {
       if (query.length >= 3) {
         setActiveOffset(-1)
-        searchInit(query)
+        // searchInit(query)
+        initSearchMethod(query)
       } else {
         setResults([])
       }
@@ -42,22 +49,80 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
     return () => clearTimeout(typingTimer)
   }, [query])
 
+  /* 
   useEffect(() => {
-    if (activeOffset !== -1) {
+     if (activeOffset !== -1) {
       setPagination((prevPagination) =>
         prevPagination.map((offset, pageNumber) => {
+          // activeOffset / RESULTS_LENGTH <= pageNumber &&
+          //   activeOffset / RESULTS_LENGTH + CLICKABLE_PAGES_NUMBER > pageNumber
           if (
-            activeOffset / RESULTS_LENGTH <= pageNumber &&
-            activeOffset / RESULTS_LENGTH + CLICKABLE_PAGES_NUMBER > pageNumber
+            activeOffset <= offset &&
+            activeOffset + CLICKABLE_PAGES_NUMBER * RESULTS_LENGTH > offset
           ) {
             return { ...offset, shown: true }
           }
           return { ...offset, shown: false }
         })
       )
-    }
-  }, [activeOffset, query])
+    } 
+  }, [activeOffset, query]) */
 
+  useEffect(() => {
+    if (songResults.isSuccess || albumResults.isSuccess) {
+      const { total, offset, ...output } = songResults.data || albumResults.data
+      setResults(() => {
+        return output.foundAlbums || output.foundTracks
+      })
+      setActiveOffset(+offset)
+      setPagination(() => {
+        // add all page offsets for all pages
+        let pages = []
+        const totalPages = Math.ceil(total / RESULTS_LENGTH)
+        for (let page = 0; page < totalPages; page++) {
+          const newOffset = page * RESULTS_LENGTH
+          let active = false,
+            shown = false
+          if (newOffset === +offset) {
+            active = true
+          }
+          if (
+            offset <= newOffset &&
+            offset / RESULTS_LENGTH + CLICKABLE_PAGES_NUMBER >
+              newOffset / RESULTS_LENGTH
+          ) {
+            shown = true
+          }
+          pages.push({ pageOffset: newOffset, active, shown })
+        }
+        return pages
+      })
+    }
+  }, [songResults, albumResults])
+
+  const initSearchMethod = (value, offset = 0) => {
+    switch (type) {
+      case 'albums':
+        triggerAlbumResults({
+          value,
+          offset,
+          resultsLimit: RESULTS_LENGTH,
+        })
+        break
+      case 'tracks':
+        triggerSongResults({
+          value,
+          offset,
+          resultsLimit: RESULTS_LENGTH,
+        })
+        break
+
+      default:
+        return null
+    }
+  }
+
+  /*   
   const getUrlPath = () => {
     switch (type) {
       case 'albums':
@@ -67,19 +132,28 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
       default:
         return ''
     }
-  }
+  } 
 
+   const getSearchResult = () => {
+    switch (type) {
+      case 'albums':
+        return albumResults
+      case 'tracks':
+        return songResults
+      default:
+        return null
+    }
+  }
+  
   const searchInit = async (value, offset = 0) => {
     const urlPath = getUrlPath()
-
     const searchOutput = await fetch(
       `http://localhost:3000/${urlPath}?q=${value}&offset=${offset}&limit=${RESULTS_LENGTH}`,
       {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
       }
-    )
-
+    ) 
     const { total, ...output } = await searchOutput.json()
     setResults(() => {
       return output.foundAlbums || output.foundTracks
@@ -99,22 +173,26 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
         pages.push({ pageOffset: newOffset, active })
       }
       return pages
-    })
+    }) 
   }
+ */
 
   const changePageHandler = (offset) => {
-    searchInit(query, offset)
+    // searchInit(query, offset)
+    initSearchMethod(query, offset)
   }
 
   const nextHandler = () => {
     if (pagination.length > activeOffset / RESULTS_LENGTH + 1) {
-      searchInit(query, activeOffset + RESULTS_LENGTH)
+      // searchInit(query, activeOffset + RESULTS_LENGTH)
+      initSearchMethod(query, activeOffset + RESULTS_LENGTH)
     }
   }
 
   const previousHandler = () => {
     if (activeOffset / RESULTS_LENGTH - 1 >= 0) {
-      searchInit(query, activeOffset - RESULTS_LENGTH)
+      // searchInit(query, activeOffset - RESULTS_LENGTH)
+      initSearchMethod(query, activeOffset - RESULTS_LENGTH)
     }
   }
 
@@ -140,7 +218,6 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
             ))}
           </Grid>
         )
-
       case 'tracks':
         return (
           <>
@@ -182,12 +259,12 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
           >
             <ArrowBackIosNewRoundedIcon sx={{ fontSize: '.8rem' }} />
           </button>
-          <div>
-            {pagination.map((page, index) => {
+          <div className={styles.pagination__pages}>
+            {pagination.map((page) => {
               return (
                 <ResultPageNumber
-                  key={index}
-                  pageNumber={index}
+                  key={page.pageOffset / RESULTS_LENGTH}
+                  pageNumber={page.pageOffset / RESULTS_LENGTH}
                   page={page}
                   clickHandler={() => changePageHandler(page.pageOffset)}
                 />

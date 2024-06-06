@@ -11,6 +11,13 @@
     margin: 2rem 0;
   }
 
+  &__pages {
+    min-width: 13rem;
+    @include respond(phone) {
+      min-width: 9rem;
+    }
+  }
+
   &__button {
     border-radius: 14px;
     width: 28px;

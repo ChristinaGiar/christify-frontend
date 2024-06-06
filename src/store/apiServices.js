@@ -8,7 +8,7 @@ export const apiServicesApi = createApi({
       headers.set('Content-Type', 'application/json')
     },
   }),
-  tagTypes: ['Songs', 'Results'],
+  tagTypes: ['Songs', 'SongResults', 'AlbumResults'],
   endpoints: (builder) => ({
     getLatestSongs: builder.query({
       query: () => 'latestSongs',
@@ -46,15 +46,29 @@ export const apiServicesApi = createApi({
     getAccessToken: builder.query({
       query: () => ({ method: 'GET', url: 'access' }),
     }),
+    getAlbumResults: builder.query({
+      query: ({ value, offset, resultsLimit }) => ({
+        url: `searchAlbums?q=${value}&offset=${offset}&limit=${resultsLimit}`,
+        method: 'GET',
+      }),
+      providesTags: ['AlbumResults'],
+    }),
+    getSongResults: builder.query({
+      query: ({ value, offset, resultsLimit }) => ({
+        url: `searchTracks?q=${value}&offset=${offset}&limit=${resultsLimit}`,
+        method: 'GET',
+      }),
+      providesTags: ['SongResults'],
+    }),
   }),
 })
 
 export const {
-  useGetLatestSongsQuery,
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
-  useGetAlbumQuery,
   useLazyGetAlbumQuery,
   useGetAccessTokenQuery,
   useLazyGetAccessTokenQuery,
+  useLazyGetSongResultsQuery,
+  useLazyGetAlbumResultsQuery,
 } = apiServicesApi

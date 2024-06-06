@@ -41,14 +41,15 @@ const routesConfig = [
         loader: ({ _, params }) => {
           return params.albumID
         },
-        // async ({ _, params }) => {
-        //   return fetch(
-        //     `http://localhost:3000/album?albumID=${params.albumID}`, {
-        //     method: 'GET',
-        //     headers: { 'Content-Type': 'application/json' },
-        //   }
-        //   );
-        // },
+        /*         
+        async ({ _, params }) => {
+          return fetch(
+            `http://localhost:3000/album?albumID=${params.albumID}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+          }
+          );
+        }, */
       },
     ],
   },
