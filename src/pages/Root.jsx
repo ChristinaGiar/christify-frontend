@@ -16,6 +16,7 @@ const Root = () => {
   var timer = 0
 
   useEffect(() => {
+    console.log('token')
     triggerAccessToken()
   }, [])
 

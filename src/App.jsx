@@ -57,7 +57,7 @@ const routesConfig = [
 const router = createBrowserRouter(routesConfig)
 
 const App = () => {
-  /*   var timer = 0
+  /* var timer = 0
 
   useEffect(() => {
     fetchAccessToken()
@@ -71,7 +71,7 @@ const App = () => {
     headers: { 'Content-Type': 'application/json' },
   }
 
-   const fetchAccessToken = async () => {
+  const fetchAccessToken = async () => {
     try {
       const expiresIn = await fetch('http://localhost:3000/access', requestInfo)
 

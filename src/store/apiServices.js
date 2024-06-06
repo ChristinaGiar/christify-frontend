@@ -8,7 +8,7 @@ export const apiServicesApi = createApi({
       headers.set('Content-Type', 'application/json')
     },
   }),
-  tagTypes: ['Songs'],
+  tagTypes: ['Songs', 'Results'],
   endpoints: (builder) => ({
     getLatestSongs: builder.query({
       query: () => 'latestSongs',
@@ -54,5 +54,7 @@ export const {
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
   useGetAlbumQuery,
+  useLazyGetAlbumQuery,
+  useGetAccessTokenQuery,
   useLazyGetAccessTokenQuery,
 } = apiServicesApi
