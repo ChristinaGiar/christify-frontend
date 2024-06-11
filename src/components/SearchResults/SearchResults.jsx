@@ -5,7 +5,7 @@ import styles from './SearchResults.module.scss'
 import { useEffect } from 'react'
 import Track from '../Track/Track'
 import Album from '../Album/Album'
-import { Grid } from '@mui/material'
+import { Grid, Skeleton } from '@mui/material'
 import { RESULTS_LENGTH, CLICKABLE_PAGES_NUMBER } from '../../utils/constants'
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded'
@@ -20,21 +20,6 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
   const [activeOffset, setActiveOffset] = useState(-1)
   const [triggerSongResults, songResults] = useLazyGetSongResultsQuery()
   const [triggerAlbumResults, albumResults] = useLazyGetAlbumResultsQuery()
-
-  useEffect(() => {
-    const typingTimer = setTimeout(() => {
-      if (results.length > 0) {
-        areResultsFound({ type: type, found: true })
-      } else if (
-        results.length === 0 &&
-        query.length >= 3 &&
-        activeOffset !== -1
-      ) {
-        areResultsFound({ type: type, found: false })
-      }
-    }, 500)
-    return () => clearTimeout(typingTimer)
-  }, [results, query])
 
   useEffect(() => {
     const typingTimer = setTimeout(() => {
@@ -99,6 +84,24 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
       })
     }
   }, [songResults, albumResults])
+
+  useEffect(() => {
+    const typingTimer = setTimeout(() => {
+      if (query.length >= 3) {
+        if (results.length > 0) {
+          areResultsFound({ type: type, found: true })
+        } else if (
+          results.length === 0 &&
+          query.length >= 3 &&
+          activeOffset !== -1 // check AFTER the search service is completed
+        ) {
+          areResultsFound({ type: type, found: false })
+        }
+      }
+      console.log(query)
+    }, 500)
+    return () => clearTimeout(typingTimer)
+  }, [results]) //, query
 
   const initSearchMethod = (value, offset = 0) => {
     switch (type) {
@@ -205,17 +208,54 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
             rowSpacing={{ xs: 1 }}
             columnSpacing={{ xs: 1, sm: 0.5 }}
           >
-            {results.map((item) => (
-              <Grid item xs={6} md={3} key={item.albumID}>
-                <Album
-                  name={item.name}
-                  albumID={item.albumID}
-                  artists={item.artists}
-                  image={item.image?.url}
-                  type='album'
-                />
-              </Grid>
-            ))}
+            {albumResults.isFetching
+              ? [...Array(8)].map((_, index) => (
+                  // Skeleton
+                  <Grid item xs={6} md={3} key={index}>
+                    <div className={styles.albumSkeleton}>
+                      <Skeleton
+                        className={styles.albumSkeleton__image}
+                        variant='rectangular'
+                        sx={{
+                          bgcolor: 'grey.900',
+                        }}
+                      />
+                      <div className={styles.albumSkeleton__texts}>
+                        <Skeleton
+                          className={styles.albumSkeleton__text}
+                          variant='text'
+                          sx={{
+                            fontSize: '1rem',
+                            bgcolor: 'grey.900',
+                            display: 'inline-block',
+                          }}
+                        />
+                        <Skeleton
+                          className={styles.albumSkeleton__text}
+                          variant='text'
+                          sx={{
+                            fontSize: '.9rem',
+                            bgcolor: 'grey.900',
+                            display: 'inline-block',
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </Grid>
+                ))
+              : albumResults.isSuccess &&
+                albumResults.data.foundAlbums.length > 0 &&
+                results.map((item) => (
+                  <Grid item xs={6} md={3} key={item.albumID}>
+                    <Album
+                      name={item.name}
+                      albumID={item.albumID}
+                      artists={item.artists}
+                      image={item.image?.url}
+                      type='album'
+                    />
+                  </Grid>
+                ))}
           </Grid>
         )
       case 'tracks':
@@ -227,19 +267,50 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
               <h5 className={styles.tableTitle__album}>Album</h5>
               <h5 className={styles.tableTitle__details}></h5>
             </div>
-            {results.map((item, index) => (
-              <Track
-                key={item.trackID}
-                name={item.name}
-                trackID={item.trackID}
-                artists={item.artists}
-                image={item.image?.url}
-                song={item.song}
-                album={item.album}
-                number={+activeOffset + index + 1}
-                type='track'
-              />
-            ))}
+            {songResults.isSuccess &&
+            songResults.data.foundTracks.length > 0 ? (
+              <>
+                {songResults.data.foundTracks.map((item, index) => (
+                  <Track
+                    key={item.trackID}
+                    name={item.name}
+                    trackID={item.trackID}
+                    artists={item.artists}
+                    image={item.image?.url}
+                    song={item.song}
+                    album={item.album}
+                    number={+activeOffset + index + 1}
+                    type='track'
+                  />
+                ))}
+              </>
+            ) : (
+              [...Array(8)].map((_, index) => (
+                // Skeleton
+                <div key={index} className={styles.songSkeleton}>
+                  <div className={styles.songSkeleton__texts}>
+                    <Skeleton
+                      className={styles.songSkeleton__text}
+                      variant='text'
+                      sx={{
+                        fontSize: '1.2rem',
+                        bgcolor: 'grey.900',
+                        display: 'inline-block',
+                      }}
+                    />
+                    <Skeleton
+                      className={styles.songSkeleton__text}
+                      variant='text'
+                      sx={{
+                        fontSize: '.9rem',
+                        bgcolor: 'grey.900',
+                        display: 'inline-block',
+                      }}
+                    />
+                  </div>
+                </div>
+              ))
+            )}
           </>
         )
       default:
@@ -252,34 +323,40 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
       <>
         <h3 className='categoryTitle'>{title}</h3>
         {searchItems()}
-        <div className={styles.pagination}>
-          <button
-            className={styles.pagination__button}
-            onClick={previousHandler}
-          >
-            <ArrowBackIosNewRoundedIcon sx={{ fontSize: '.8rem' }} />
-          </button>
-          <div className={styles.pagination__pages}>
-            {pagination.map((page) => {
-              return (
-                <ResultPageNumber
-                  key={page.pageOffset / RESULTS_LENGTH}
-                  pageNumber={page.pageOffset / RESULTS_LENGTH}
-                  page={page}
-                  clickHandler={() => changePageHandler(page.pageOffset)}
-                />
-              )
-            })}
-          </div>
-          <button className={styles.pagination__button} onClick={nextHandler}>
-            <ArrowForwardIosRoundedIcon sx={{ fontSize: '.8rem' }} />
-          </button>
-        </div>
+        {(songResults.isSuccess || albumResults.isSuccess) &&
+          pagination.length > 1 && (
+            <div className={styles.pagination}>
+              <button
+                className={styles.pagination__button}
+                onClick={previousHandler}
+              >
+                <ArrowBackIosNewRoundedIcon sx={{ fontSize: '.8rem' }} />
+              </button>
+              <div className={styles.pagination__pages}>
+                {pagination.map((page) => {
+                  return (
+                    <ResultPageNumber
+                      key={page.pageOffset / RESULTS_LENGTH}
+                      pageNumber={page.pageOffset / RESULTS_LENGTH}
+                      page={page}
+                      clickHandler={() => changePageHandler(page.pageOffset)}
+                    />
+                  )
+                })}
+              </div>
+              <button
+                className={styles.pagination__button}
+                onClick={nextHandler}
+              >
+                <ArrowForwardIosRoundedIcon sx={{ fontSize: '.8rem' }} />
+              </button>
+            </div>
+          )}
       </>
     )
   }
 
-  return <>{results.length > 0 && resultsFound()}</>
+  return <>{query.length >= 3 && resultsFound()}</>
 }
 
 SearchResults.propTypes = {

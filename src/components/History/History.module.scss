@@ -29,3 +29,33 @@
     }
   }
 }
+
+.skeleton {
+  display: inline-block;
+  width: calc(100% - 2.6rem);
+  margin: 1rem 1.3rem;
+  @media screen and (max-width: 600px) {
+    width: calc(100% - 12.8px);
+    margin: 4.8px 6.4px;
+  }
+
+  &__image {
+    margin-right: 1rem;
+    width: 40px;
+    height: 40px !important;
+    display: inline-block;
+    @media screen and (max-width: 600px) {
+      width: 35px;
+      height: 35px !important;
+    }
+  }
+
+  &__texts {
+    width: calc(80% - 40px - 1rem);
+    display: inline-block !important;
+  }
+  &__text {
+    width: 100%;
+    display: inline-block !important;
+  }
+}

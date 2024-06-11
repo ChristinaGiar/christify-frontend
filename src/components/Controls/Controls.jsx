@@ -38,15 +38,17 @@ const Controls = ({
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong
 
   const repeat = useCallback(() => {
-    const currentTime = audioRef.current.currentTime
-    setTimeProgress(currentTime)
-    rangeRef.current.value = currentTime
-    rangeRef.current.style.setProperty(
-      '--range-progress',
-      `${(rangeRef.current.value / duration) * 100}%`
-    )
+    const currentTime = audioRef?.current?.currentTime
+    if (currentTime) {
+      setTimeProgress(currentTime)
+      rangeRef.current.value = currentTime
+      rangeRef.current.style.setProperty(
+        '--range-progress',
+        `${(rangeRef.current.value / duration) * 100}%`
+      )
 
-    playAnimationRef.current = requestAnimationFrame(repeat) // trigger current range point
+      playAnimationRef.current = requestAnimationFrame(repeat) // trigger current range point
+    }
   }, [audioRef, duration, rangeRef, setTimeProgress])
 
   useEffect(() => {

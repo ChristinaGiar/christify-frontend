@@ -42,13 +42,13 @@ const SearchInput = () => {
         />
         <SearchRoundedIcon className={styles.search__icon} />
       </div>
-      {resultsFound['albums'].found && (
+      {resultsFound.albums.found && (
         <SearchAlbums query={query} resultsFound={handleResultsFound} />
       )}
       {resultsFound.tracks.found && (
         <SearchTracks query={query} resultsFound={handleResultsFound} />
       )}
-      {!resultsFound['albums'].found && !resultsFound.tracks.found && (
+      {!resultsFound.albums.found && !resultsFound.tracks.found && (
         <NoResults query={query} />
       )}
     </div>

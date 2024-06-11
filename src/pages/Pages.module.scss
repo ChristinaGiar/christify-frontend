@@ -186,6 +186,7 @@
       box-shadow: rgba(black, 0.4) 0 0 6px 0;
     }
   }
+
   .tableTitles {
     display: flex;
     padding: 0.4rem 1rem;
@@ -197,6 +198,7 @@
       padding: 0.4rem 0rem;
       gap: 0.4rem;
     }
+
     .tableTitle {
       &__number {
         flex-basis: 7%;
@@ -210,6 +212,37 @@
       &__details {
         flex-basis: 10%;
       }
+    }
+  }
+
+  .skeletonImage {
+    flex-basis: 35%;
+    width: 35%;
+    height: auto !important;
+    border-radius: 14px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .songSkeleton {
+    &__texts {
+      width: 80%;
+      display: inline-block !important;
+      margin: 0.8rem 1.3rem;
+
+      @media screen and (max-width: 900px) {
+        width: 90%;
+        margin: 1rem 1.1rem;
+      }
+      @media screen and (max-width: 600px) {
+        width: 90%;
+        margin: 4.8px 6.4px;
+      }
+    }
+
+    &__text {
+      width: 100%;
+      display: inline-block !important;
     }
   }
 }

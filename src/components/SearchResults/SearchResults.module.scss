@@ -63,3 +63,53 @@
     }
   }
 }
+
+.albumSkeleton {
+  padding: 0.5rem 0.5rem 1rem;
+
+  &__image {
+    width: 100%;
+    height: auto !important;
+    aspect-ratio: 1 / 1; /* defining the aspect ratio of the image */
+    object-fit: cover;
+    margin-bottom: 0.3rem;
+    border-radius: 14px;
+    display: inline-block;
+  }
+
+  &__texts {
+    width: 100%;
+    display: inline-block !important;
+  }
+  &__text {
+    width: 100%;
+    display: inline-block !important;
+  }
+}
+
+.songSkeleton {
+  display: inline-block;
+  width: calc(100% - 2.6rem);
+  margin: 0.8rem 1.3rem;
+  @media screen and (max-width: 900px) {
+    width: 80%;
+    margin: 1rem 1.1rem;
+  }
+  @media screen and (max-width: 600px) {
+    width: 90%;
+    margin: 4.8px 6.4px;
+  }
+
+  &__texts {
+    width: 80%;
+    display: inline-block !important;
+    @media screen and (max-width: 900px) {
+      width: 100%;
+    }
+  }
+
+  &__text {
+    width: 100%;
+    display: inline-block !important;
+  }
+}
