@@ -1,8 +1,45 @@
-# React + Vite
+# Christify music app - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+A simple music app which allows the user to listen to tracks, as well as get access to the most recently played ones, review albums and search for his/her favourite songs/albums.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Architecture
+
+- Frontend - [ReactJS](https://react.dev/) with [Redux](https://redux.js.org/) and [RTK query](https://redux-toolkit.js.org/rtk-query/overview)
+- BFF - [NodeJS](https://nodejs.org/en) with [ExpressJS](https://expressjs.com/)
+- DB - [Cloud Firestore Database](https://firebase.google.com/docs/firestore)
+
+## Clone project
+
+You can download or clone this project by running this command from your terminal:
+
+```
+git clone https://github.com/ChristinaGiar/christify-frontend.git
+```
+
+## Start the frontend project
+
+Go into the folder:
+
+```
+cd christify-backend
+```
+
+Install project dependencies:
+
+```sh
+npm install
+```
+
+Start the dev server:
+
+```sh
+npm run dev
+```
+
+Go to [christify-backend](https://github.com/ChristinaGiar/christify-backend) to clone also the backend project.
+
+## License
+
+MIT
