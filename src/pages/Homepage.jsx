@@ -1,7 +1,9 @@
 import { useEffect } from 'react'
+
 import History from '../components/History/History'
 import { useLazyGetLatestSongsQuery } from '../store/apiServices'
 import { LATEST_SONGS_LENGTH } from '../utils/constants'
+
 const Homepage = () => {
   const [triggerLatestSongs, latestSongs] = useLazyGetLatestSongsQuery()
 

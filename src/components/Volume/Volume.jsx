@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded'
 import VolumeDownRoundedIcon from '@mui/icons-material/VolumeDownRounded'
 import VolumeMuteRoundedIcon from '@mui/icons-material/VolumeMuteRounded'
+import VolumeUpRoundedIcon from '@mui/icons-material/VolumeUpRounded'
+import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
+
 import styles from './Volume.module.scss'
 
 const Volume = ({ audioRef }) => {

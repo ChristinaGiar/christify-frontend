@@ -1,11 +1,12 @@
+import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded'
+import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
+import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
+import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { activeSongActions } from '../../store/activeSong'
 import { artistsArrayToString } from '../../utils/functions'
-import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
-import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
-import KeyboardArrowUpRoundedIcon from '@mui/icons-material/KeyboardArrowUpRounded'
-import { useDispatch, useSelector } from 'react-redux'
 import styles from './SongSummary.module.scss'
-import PropTypes from 'prop-types'
 
 /// USED only on mobile
 const SongSummary = ({ isPlayerPageOpen, setIsPlayerPageOpen }) => {

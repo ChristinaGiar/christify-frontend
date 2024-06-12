@@ -18,14 +18,12 @@ const activeSongSlice = createSlice({
       state.schema.album = action.payload.album
       state.schema.isPlaying = true
       state.schema.replayed = false
-      console.log('action.payload', action.payload)
     },
     setPlayingMode(state, action) {
       state.schema.isPlaying = action.payload
     },
     setReplayed(state, action) {
       state.schema.replayed = action.payload.replayed
-      console.log('replayed', action.payload.replayed)
     },
   },
 })

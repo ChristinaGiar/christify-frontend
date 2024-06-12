@@ -1,11 +1,12 @@
-import PropTypes from 'prop-types'
-import { useSelector, useDispatch } from 'react-redux'
-import { activeSongActions } from '../../store/activeSong'
-import { setBrowsedType } from '../../store/controllers'
-import styles from './Track.module.scss'
-import { usePostLatestSongMutation } from '../../store/apiServices'
 import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded'
+import PropTypes from 'prop-types'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { activeSongActions } from '../../store/activeSong'
+import { usePostLatestSongMutation } from '../../store/apiServices'
+import { setBrowsedType } from '../../store/controllers'
 import { artistsArrayToString } from '../../utils/functions'
+import styles from './Track.module.scss'
 
 const Track = (props) => {
   const [triggerLatestSong] = usePostLatestSongMutation() //, latestSong

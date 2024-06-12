@@ -1,14 +1,15 @@
-import { useSelector, useDispatch } from 'react-redux'
-import { useRef, useEffect } from 'react'
+import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
+import { useRef } from 'react'
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
+
+import { artistsArrayToString, isEmptyObject } from '../../utils/functions'
+import { useWindowDimensions } from '../../utils/hooks'
 import Controls from '../Controls/Controls'
 import Range from '../Range/Range'
-import { useState } from 'react'
-import { artistsArrayToString, isEmptyObject } from '../../utils/functions'
+import SongSummary from '../SongSummary/SongSummary'
 import Volume from '../Volume/Volume'
 import styles from './SongPlayer.module.scss'
-import { useWindowDimensions } from '../../utils/hooks'
-import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded'
-import SongSummary from '../SongSummary/SongSummary'
 
 const SongPlayer = () => {
   const audioRef = useRef()

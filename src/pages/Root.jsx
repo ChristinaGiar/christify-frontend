@@ -1,11 +1,12 @@
-import { useNavigate, Outlet, useLocation } from 'react-router-dom'
-import SongPlayer from '../components/SongPlayer/SongPlayer'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import styles from './Pages.module.scss'
-import logoImage from '../assets/christify-logo.png'
-import { useLazyGetAccessTokenQuery } from '../store/apiServices'
 import { useEffect } from 'react'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+
+import logoImage from '../assets/christify-logo.png'
+import SongPlayer from '../components/SongPlayer/SongPlayer'
+import { useLazyGetAccessTokenQuery } from '../store/apiServices'
+import styles from './Pages.module.scss'
 
 const Root = () => {
   const navigate = useNavigate()

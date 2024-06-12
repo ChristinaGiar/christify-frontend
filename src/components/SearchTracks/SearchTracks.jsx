@@ -1,5 +1,6 @@
-import SearchResults from '../SearchResults/SearchResults'
 import PropTypes from 'prop-types'
+
+import SearchResults from '../SearchResults/SearchResults'
 
 const SearchTracks = ({ query, resultsFound }) => {
   const areResultsFound = (data) => resultsFound(data)

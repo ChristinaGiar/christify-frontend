@@ -1,18 +1,19 @@
-import { useState } from 'react'
-import ResultPageNumber from '../ResultPageNumber/ResultPageNumber'
-import PropTypes from 'prop-types'
-import styles from './SearchResults.module.scss'
-import { useEffect } from 'react'
-import Track from '../Track/Track'
-import Album from '../Album/Album'
-import { Grid, Skeleton } from '@mui/material'
-import { RESULTS_LENGTH, CLICKABLE_PAGES_NUMBER } from '../../utils/constants'
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded'
 import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded'
+import { Grid, Skeleton } from '@mui/material'
+import PropTypes from 'prop-types'
+import { useState } from 'react'
+import { useEffect } from 'react'
+
 import {
   useLazyGetAlbumResultsQuery,
   useLazyGetSongResultsQuery,
 } from '../../store/apiServices'
+import { CLICKABLE_PAGES_NUMBER, RESULTS_LENGTH } from '../../utils/constants'
+import Album from '../Album/Album'
+import ResultPageNumber from '../ResultPageNumber/ResultPageNumber'
+import Track from '../Track/Track'
+import styles from './SearchResults.module.scss'
 
 const SearchResults = ({ query, title, type, areResultsFound }) => {
   const [results, setResults] = useState([])
@@ -98,7 +99,6 @@ const SearchResults = ({ query, title, type, areResultsFound }) => {
           areResultsFound({ type: type, found: false })
         }
       }
-      console.log(query)
     }, 500)
     return () => clearTimeout(typingTimer)
   }, [results]) //, query

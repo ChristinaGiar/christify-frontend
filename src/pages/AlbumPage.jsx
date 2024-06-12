@@ -1,15 +1,15 @@
-import { useLoaderData } from 'react-router-dom'
+import { Skeleton } from '@mui/material'
+import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
+import { useLoaderData } from 'react-router-dom'
 
 import Track from '../components/Track/Track'
-import { setBrowsedType } from '../store/controllers'
 import {
   useGetAccessTokenQuery,
   useLazyGetAlbumQuery,
 } from '../store/apiServices'
-import { useEffect } from 'react'
+import { setBrowsedType } from '../store/controllers'
 import styles from './Pages.module.scss'
-import { Skeleton } from '@mui/material'
 
 function AlbumPage() {
   const albumID = useLoaderData()
