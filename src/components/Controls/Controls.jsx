@@ -1,23 +1,24 @@
+import Forward10RoundedIcon from '@mui/icons-material/Forward10Rounded'
+import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
+import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
+import Replay10RoundedIcon from '@mui/icons-material/Replay10Rounded'
+import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded'
+import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded'
 import PropTypes from 'prop-types'
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect, useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import { activeSongActions } from '../../store/activeSong'
-import { isEmptyObject } from '../../utils/functions'
 import {
   useLazyGetLatestSongsQuery,
   usePostLatestSongMutation,
 } from '../../store/apiServices'
 import { setBrowsedType } from '../../store/controllers'
-import { useState } from 'react'
 import { LATEST_SONGS_LENGTH } from '../../utils/constants'
-import PlayCircleOutlineRoundedIcon from '@mui/icons-material/PlayCircleOutlineRounded'
-import PauseCircleOutlineRoundedIcon from '@mui/icons-material/PauseCircleOutlineRounded'
-import SkipNextRoundedIcon from '@mui/icons-material/SkipNextRounded'
-import SkipPreviousRoundedIcon from '@mui/icons-material/SkipPreviousRounded'
-import Forward10RoundedIcon from '@mui/icons-material/Forward10Rounded'
-import Replay10RoundedIcon from '@mui/icons-material/Replay10Rounded'
-import styles from './Control.module.scss'
+import { isEmptyObject } from '../../utils/functions'
 import { useEnter } from '../../utils/hooks'
+import styles from './Control.module.scss'
 
 const Controls = ({
   audioRef,
@@ -39,16 +40,16 @@ const Controls = ({
 
   const repeat = useCallback(() => {
     const currentTime = audioRef?.current?.currentTime
-    if (currentTime) {
-      setTimeProgress(currentTime)
-      rangeRef.current.value = currentTime
-      rangeRef.current.style.setProperty(
-        '--range-progress',
-        `${(rangeRef.current.value / duration) * 100}%`
-      )
+    // if (currentTime) {
+    setTimeProgress(currentTime)
+    rangeRef.current.value = currentTime
+    rangeRef.current.style.setProperty(
+      '--range-progress',
+      `${(rangeRef.current.value / duration) * 100}%`
+    )
 
-      playAnimationRef.current = requestAnimationFrame(repeat) // trigger current range point
-    }
+    playAnimationRef.current = requestAnimationFrame(repeat) // trigger current range point
+    // }
   }, [audioRef, duration, rangeRef, setTimeProgress])
 
   useEffect(() => {
@@ -283,7 +284,8 @@ const Controls = ({
   const handleEnterKey = (event) => {
     if (
       event.keyCode === 32 &&
-      event.target.tagName.trim().toLowerCase() !== 'button' // don't affect button's behavior
+      event.target.tagName.trim().toLowerCase() !== 'button' &&
+      event.target.tagName.trim().toLowerCase() !== 'input' // don't affect button's and input's behavior
     ) {
       event.preventDefault()
       playRef.current.click()

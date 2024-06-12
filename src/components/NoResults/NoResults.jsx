@@ -1,6 +1,7 @@
-import styles from './NoResults.module.scss'
 import SentimentDissatisfiedRoundedIcon from '@mui/icons-material/SentimentDissatisfiedRounded'
 import PropTypes from 'prop-types'
+
+import styles from './NoResults.module.scss'
 
 const NoResults = ({ query }) => {
   return (

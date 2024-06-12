@@ -1,10 +1,11 @@
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
+import { TextField } from '@mui/material'
 import { useState } from 'react'
+
+import NoResults from '../NoResults/NoResults'
 import SearchAlbums from '../SearchAlbums/SearchAlbums'
 import SearchTracks from '../SearchTracks/SearchTracks'
-import { TextField } from '@mui/material'
 import styles from './SearchInput.module.scss'
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-import NoResults from '../NoResults/NoResults'
 
 const SearchInput = () => {
   const initialResultFound = {

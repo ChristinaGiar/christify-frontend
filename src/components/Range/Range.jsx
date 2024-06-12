@@ -1,4 +1,5 @@
 import { PropTypes } from 'prop-types'
+
 import styles from './Range.module.scss'
 
 const Range = ({ rangeRef, audioRef, duration, timeProgress }) => {

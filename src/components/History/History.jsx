@@ -1,7 +1,8 @@
+import { Skeleton } from '@mui/material'
 import { PropTypes } from 'prop-types'
+
 import Track from '../Track/Track'
 import styles from './History.module.scss'
-import { Skeleton } from '@mui/material'
 
 const History = ({ lastSongs }) => {
   return (

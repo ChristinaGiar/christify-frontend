@@ -1,11 +1,11 @@
-import { useEffect } from 'react'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Provider } from 'react-redux'
-import Root from './pages/Root'
-import store from './store/index'
-import Homepage from './pages/Homepage'
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
 import SearchInput from './components/SearchInput/SearchInput'
 import AlbumPage from './pages/AlbumPage'
+import Homepage from './pages/Homepage'
+import Root from './pages/Root'
+import store from './store/index'
 
 const routesConfig = [
   {
@@ -38,7 +38,7 @@ const routesConfig = [
             <AlbumPage />
           </>
         ),
-        loader: ({ _, params }) => {
+        loader: ({ params }) => {
           return params.albumID
         },
         /*         

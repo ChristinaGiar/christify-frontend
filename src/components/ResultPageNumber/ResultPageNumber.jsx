@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+
 import styles from './ResultPageNumber.module.scss'
 
 const ResultPageNumber = (props) => {

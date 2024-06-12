@@ -1,8 +1,9 @@
+import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
-import styles from './Album.module.scss'
-import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRounded'
+
 import { artistsArrayToString } from '../../utils/functions'
+import styles from './Album.module.scss'
 
 const Album = (props) => {
   return (
