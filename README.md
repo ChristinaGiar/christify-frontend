@@ -23,19 +23,23 @@ git clone https://github.com/ChristinaGiar/christify-frontend.git
 Go into the folder:
 
 ```
-cd christify-backend
+cd christify-frontend
 ```
 
 Install project dependencies:
 
-```sh
+```
 npm install
+# or
+yarn
 ```
 
 Start the dev server:
 
 ```sh
 npm run dev
+# or
+yarn dev
 ```
 
 Go to [christify-backend](https://github.com/ChristinaGiar/christify-backend) to clone also the backend project.
