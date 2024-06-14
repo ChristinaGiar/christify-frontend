@@ -17,7 +17,7 @@ import {
 import { setBrowsedType } from '../../store/controllers'
 import { LATEST_SONGS_LENGTH } from '../../utils/constants'
 import { isEmptyObject } from '../../utils/functions'
-import { useEnter } from '../../utils/hooks'
+import { useSpace } from '../../utils/hooks'
 import styles from './Control.module.scss'
 
 const Controls = ({
@@ -281,7 +281,7 @@ const Controls = ({
     }
   }, [latestSongs, isPrevPressed, isNextPressed])
 
-  const handleEnterKey = (event) => {
+  const handleSpaceKey = (event) => {
     if (
       event.keyCode === 32 &&
       event.target.tagName.trim().toLowerCase() !== 'button' &&
@@ -291,7 +291,7 @@ const Controls = ({
       playRef.current.click()
     }
   }
-  useEnter((e) => handleEnterKey(e))
+  useSpace((e) => handleSpaceKey(e))
 
   const handleSkipForward = () => {
     audioRef.current.currentTime += 10

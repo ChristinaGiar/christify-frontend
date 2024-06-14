@@ -1,24 +1,29 @@
 import { useEffect } from 'react'
 
 import History from '../components/History/History'
-import { useLazyGetLatestSongsQuery } from '../store/apiServices'
+import NewReleaseBanner from '../components/NewReleaseBanner/NewReleaseBanner'
+import {
+  useGetAccessTokenQuery,
+  useLazyGetLatestSongsQuery,
+} from '../store/apiServices'
 import { LATEST_SONGS_LENGTH } from '../utils/constants'
 
 const Homepage = () => {
   const [triggerLatestSongs, latestSongs] = useLazyGetLatestSongsQuery()
+  const { data: accessToken } = useGetAccessTokenQuery()
 
   useEffect(() => {
-    triggerLatestSongs()
-  }, [])
+    if (accessToken) {
+      triggerLatestSongs()
+    }
+  }, [accessToken])
+
   return (
     <>
       <div>
-        BANNER: <b>Unlimited</b> music for <b>FREE</b>
+        <NewReleaseBanner accessToken={accessToken} />
       </div>
-      {/* TODO: Top Rated lately songs */}
-      {/* {!isEmpty(latestSongs.data) && latestSongs.isSuccess && ( */}
       <History lastSongs={latestSongs.data?.slice(0, LATEST_SONGS_LENGTH)} />
-      {/* )} */}
     </>
   )
 }

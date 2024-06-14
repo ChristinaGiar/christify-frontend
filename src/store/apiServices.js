@@ -60,6 +60,13 @@ export const apiServicesApi = createApi({
       }),
       providesTags: ['SongResults'],
     }),
+    getReleaseAlbum: builder.query({
+      query: () => ({
+        url: 'releaseAlbum',
+        method: 'GET',
+      }),
+      providesTags: ['ReleaseAlbum'],
+    }),
   }),
 })
 
@@ -71,4 +78,5 @@ export const {
   useLazyGetAccessTokenQuery,
   useLazyGetSongResultsQuery,
   useLazyGetAlbumResultsQuery,
+  useLazyGetReleaseAlbumQuery,
 } = apiServicesApi

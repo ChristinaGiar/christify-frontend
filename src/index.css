@@ -21,7 +21,7 @@
 
 a {
   font-weight: 500;
-  color: #4fc1ff;
+  color: white;
   text-decoration: inherit;
 }
 
@@ -59,7 +59,7 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: all 0.25s;
 }
 
 button:hover {
@@ -138,7 +138,7 @@ input[type='range']:hover::-ms-thumb {
 
 .categoryTitle {
   font-size: 1.4rem;
-  margin: 1.5rem 0 0.8rem;
+  margin: 2.5rem 0 0.8rem;
   @media screen and (max-width: 600px) {
     font-size: 1.2rem;
   }

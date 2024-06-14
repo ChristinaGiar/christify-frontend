@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import styles from './Volume.module.scss'
 
 const Volume = ({ audioRef }) => {
-  const [volume, setVolume] = useState(50)
+  const [volume, setVolume] = useState(30)
 
   useEffect(() => {
     if (audioRef.current) {

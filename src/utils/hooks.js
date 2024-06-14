@@ -27,12 +27,12 @@ export const useWindowDimensions = () => {
 }
 
 /// Key pressed
-export const useEnter = (onEnter) => {
+export const useSpace = (onSpace) => {
   useEffect(() => {
-    window.addEventListener('keydown', (event) => onEnter(event))
+    window.addEventListener('keydown', (event) => onSpace(event))
 
     return () => {
-      window.removeEventListener('keydown', (event) => onEnter(event))
+      window.removeEventListener('keydown', (event) => onSpace(event))
     }
   }, [])
 }
