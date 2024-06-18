@@ -6,6 +6,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import logoImage from '../assets/christify-logo.png'
 import SongPlayer from '../components/SongPlayer/SongPlayer'
 import { useLazyGetAccessTokenQuery } from '../store/apiServices'
+import { BASE_DIR } from '../utils/constants'
 import styles from './Pages.module.scss'
 
 const Root = () => {
@@ -44,11 +45,11 @@ const Root = () => {
   }
 
   const goToHomePage = () => {
-    navigate('/')
+    navigate(`/${BASE_DIR}`)
   }
 
   const goToSearchHandler = () => {
-    navigate('/search')
+    navigate(`/${BASE_DIR}/search`)
   }
 
   return (

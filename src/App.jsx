@@ -7,10 +7,11 @@ import ErrorPage from './pages/ErrorPage'
 import Homepage from './pages/Homepage'
 import Root from './pages/Root'
 import store from './store/index'
+import { BASE_DIR } from './utils/constants'
 
 const routesConfig = [
   {
-    path: '/',
+    path: `/${BASE_DIR}`,
     element: <Root />,
     errorElement: <ErrorPage />,
     id: 'root',
@@ -25,7 +26,7 @@ const routesConfig = [
         ),
       },
       {
-        path: 'search',
+        path: `search`,
         element: (
           <>
             <SearchInput />
