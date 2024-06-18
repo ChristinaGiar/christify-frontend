@@ -74,7 +74,12 @@ const Controls = ({
 
   useEffect(() => {
     // autoplay functionality
-    if (timeProgress === duration && duration > 0 && timeProgress > 0) {
+    if (
+      Math.floor(timeProgress) === duration &&
+      duration > 0 &&
+      timeProgress > 0 &&
+      activeSong.schema.isPlaying
+    ) {
       nextRef.current.click()
     }
   }, [timeProgress, duration])

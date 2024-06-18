@@ -21,7 +21,7 @@ const SongPlayer = () => {
   const { width } = useWindowDimensions()
 
   const loadRangeData = () => {
-    const seconds = audioRef.current.duration
+    const seconds = Math.floor(audioRef.current.duration)
     setDuration(seconds)
     rangeRef.current.max = seconds
   }
