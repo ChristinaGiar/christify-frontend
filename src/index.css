@@ -114,11 +114,6 @@ input[type='range']::before {
 
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
-  @media screen and (max-width: 600px) {
-    -webkit-appearance: unset;
-    width: 12px;
-    height: 12px;
-  }
 }
 
 input[type='range']:hover::-webkit-slider-thumb {
@@ -160,4 +155,22 @@ input[type='range']:hover::-ms-thumb {
 
 .w-100 {
   width: 100% !important;
+}
+
+@media only screen and (max-width: 600px) {
+  input[type='range'] {
+    height: 10px;
+  }
+  input[type='range']::before {
+    height: 10px;
+  }
+  input[type='range']::-webkit-slider-thumb {
+    background: #ffffff;
+    width: 12px;
+    height: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    z-index: 100;
+  }
 }
