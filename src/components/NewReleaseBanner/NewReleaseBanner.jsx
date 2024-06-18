@@ -37,7 +37,7 @@ const NewReleaseBanner = ({ accessToken }) => {
             ? artistsArrayToString(releaseAlbum.data.artists)
             : '-'}
         </p>
-        <Link to={`/album/${releaseAlbum.data.albumID}`}>
+        <Link to={`album/${releaseAlbum.data.albumID}`}>
           <button className={styles.releaseBanner__button}>Explore</button>
         </Link>
       </div>
