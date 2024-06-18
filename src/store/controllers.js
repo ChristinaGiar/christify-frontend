@@ -11,7 +11,7 @@ export const controllersSlice = createSlice({
       // check type of track for defining next, prev controllers & autoplay
       if (action.payload.type === 'album') {
         // song's source: album
-        state.browsedType.browsedTracks = action.payload.browsedTracks //[]
+        state.browsedType.browsedTracks = action.payload.browsedTracks
         state.browsedType.type = action.payload.type
         state.browsedType.album =
           action.payload?.album || state.browsedType.album // album songs
@@ -19,13 +19,12 @@ export const controllersSlice = createSlice({
       } else if (action.payload.type === 'track-first') {
         // 1st song clicked, song's source: songs results
         state.browsedType.type = action.payload.type
-        state.browsedType.album = action.payload.album //{}
+        state.browsedType.album = action.payload.album
         state.browsedType.browsedTracks = [action.payload.track] // tracks from search clicked and kept listed to
         state.browsedType.albumTrigger = false
       } else if (action.payload.type === 'track') {
         // song's source: songs results
         state.browsedType.type = action.payload.type
-        // state.browsedType.album = {} // NOT NEEDED
         state.browsedType.albumTrigger = false
         state.browsedType.browsedTracks = [
           ...state.browsedType.browsedTracks,
@@ -34,9 +33,7 @@ export const controllersSlice = createSlice({
       } else if (action.payload.type === 'history-track') {
         // song's source: history
         state.browsedType.type = 'history-track'
-        // state.browsedType.album = {} // TO DO LIKE ABOVE, if NOT on the side
         state.browsedType.albumTrigger = false
-        // state.browsedType.browsedTracks = [] // TO DO LIKE ABOVE, if NOT on the side
       }
     },
   },

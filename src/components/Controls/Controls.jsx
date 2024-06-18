@@ -40,7 +40,6 @@ const Controls = ({
 
   const repeat = useCallback(() => {
     const currentTime = audioRef?.current?.currentTime
-    // if (currentTime) {
     setTimeProgress(currentTime)
     rangeRef.current.value = currentTime
     rangeRef.current.style.setProperty(
@@ -49,7 +48,6 @@ const Controls = ({
     )
 
     playAnimationRef.current = requestAnimationFrame(repeat) // trigger current range point
-    // }
   }, [audioRef, duration, rangeRef, setTimeProgress])
 
   useEffect(() => {
@@ -255,7 +253,6 @@ const Controls = ({
           )
 
           if (currentSongIdx === LATEST_SONGS_LENGTH - 1) {
-            // latestSongs.data.length
             audioRef.current.pause()
             dispatch(activeSongActions.setPlayingMode(false))
           } else {

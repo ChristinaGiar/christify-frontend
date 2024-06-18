@@ -15,7 +15,6 @@ const routesConfig = [
     element: <Root />,
     errorElement: <ErrorPage />,
     id: 'root',
-    // loader: ()=>{},
     children: [
       {
         index: true,
