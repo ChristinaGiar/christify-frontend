@@ -114,6 +114,11 @@ input[type='range']::before {
 
 input[type='range']::-webkit-slider-thumb {
   -webkit-appearance: none;
+  @media screen and (max-width: 600px) {
+    -webkit-appearance: unset;
+    width: 12px;
+    height: 12px;
+  }
 }
 
 input[type='range']:hover::-webkit-slider-thumb {

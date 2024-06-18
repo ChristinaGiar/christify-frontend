@@ -15,8 +15,10 @@
   gap: 3rem;
 
   &.mobile {
-    bottom: unset;
-    top: calc(100vh - 51px);
+    // bottom: unset;
+    // top: calc(100vh - 51px);
+    bottom: calc(-100vh + 51px);
+    top: unset;
     z-index: 90;
     padding-top: 4rem;
 
@@ -33,7 +35,8 @@
     );
 
     &.show {
-      top: 0;
+      // top: 0;
+      bottom: 0;
       z-index: 110;
 
       .details__image {
