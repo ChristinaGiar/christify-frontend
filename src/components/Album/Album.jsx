@@ -2,13 +2,12 @@ import PlayCircleFilledRoundedIcon from '@mui/icons-material/PlayCircleFilledRou
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-import { BASE_DIR } from '../../utils/constants'
 import { artistsArrayToString } from '../../utils/functions'
 import styles from './Album.module.scss'
 
 const Album = (props) => {
   return (
-    <Link to={`/${BASE_DIR}/album/${props.albumID}`}>
+    <Link to={`/album/${props.albumID}`}>
       <div className={styles.album}>
         <div className={styles.album__imageWrapper}>
           <img className={styles.album__image} src={props.image} />

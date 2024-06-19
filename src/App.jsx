@@ -11,7 +11,7 @@ import { BASE_DIR } from './utils/constants'
 
 const routesConfig = [
   {
-    path: `/${BASE_DIR}`,
+    path: '/',
     element: <Root />,
     errorElement: <ErrorPage />,
     id: 'root',
@@ -47,7 +47,9 @@ const routesConfig = [
   },
 ]
 
-const router = createBrowserRouter(routesConfig)
+const router = createBrowserRouter(routesConfig, {
+  basename: `/${BASE_DIR}`,
+})
 
 const App = () => {
   return (
