@@ -27,7 +27,10 @@ const SongPlayer = () => {
   }
 
   const handleArrowDownClick = () => {
-    isMobile() && setIsPlayerPageOpen(false)
+    if (isMobile()) {
+      setIsPlayerPageOpen(false)
+      document.body.style.overflow = 'scroll'
+    }
   }
 
   const isMobile = () => width <= 600

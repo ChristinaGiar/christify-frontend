@@ -76,9 +76,6 @@
   &__title {
     font-size: 1rem;
     font-weight: 600;
-    @include respond(phone) {
-      font-size: 0.9rem;
-    }
   }
 
   &__artists {
@@ -128,8 +125,5 @@
     font-size: 0.9rem;
     color: $grey-color;
     font-weight: 400;
-    @include respond(phone) {
-      font-size: 0.85rem;
-    }
   }
 }

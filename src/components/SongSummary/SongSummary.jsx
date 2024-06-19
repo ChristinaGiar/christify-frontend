@@ -19,6 +19,7 @@ const SongSummary = ({ isPlayerPageOpen, setIsPlayerPageOpen }) => {
 
   const handleArrowUpClick = () => {
     setIsPlayerPageOpen(true)
+    document.body.style.overflow = 'hidden'
   }
 
   return (
