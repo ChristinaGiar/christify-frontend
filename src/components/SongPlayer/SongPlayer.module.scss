@@ -18,8 +18,7 @@
     bottom: calc(-100vh + 51px);
     top: unset;
     z-index: 90;
-    padding-top: 4rem;
-
+    padding-top: 6rem;
     width: 100vw;
     height: 100vh;
     flex-direction: column;
@@ -37,22 +36,30 @@
       z-index: 110;
 
       .details__image {
-        width: 300px;
-        height: 300px;
+        width: 17rem;
+        height: 17rem;
         object-fit: cover;
         flex-basis: 100%;
         border-radius: 2px;
-        top: 4rem;
-        left: calc(50% - 150px);
+        top: 6rem;
+        left: calc(50% - 8.5rem);
+      }
+
+      .closeIcon {
+        display: inline-block;
+        position: absolute;
+        z-index: 120;
+        top: 3rem;
+        right: 20px;
+        opacity: 1;
+        visibility: visible;
       }
     }
 
     .closeIcon {
-      display: inline-block;
-      position: absolute;
-      z-index: 120;
-      top: 20px;
-      right: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s ease-in-out;
     }
 
     .details {
@@ -67,8 +74,8 @@
       }
 
       &__imagePlaceholder {
-        width: 300px;
-        height: 300px;
+        width: 17rem;
+        height: 17rem;
         margin-bottom: 2rem;
       }
 
@@ -77,7 +84,7 @@
       }
 
       &__title {
-        font-size: 1rem;
+        font-size: 1.2rem;
       }
 
       &__artists {
