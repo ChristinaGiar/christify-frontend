@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "homepage": "https://christinagiar.github.io/christify-frontend",
   "scripts": {
     "dev": "vite",
     "build": "vite build --base=/christify-frontend",

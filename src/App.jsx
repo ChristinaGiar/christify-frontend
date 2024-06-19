@@ -1,5 +1,5 @@
 import { Provider } from 'react-redux'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createHashRouter, RouterProvider } from 'react-router-dom'
 
 import SearchInput from './components/SearchInput/SearchInput'
 import AlbumPage from './pages/AlbumPage'
@@ -7,7 +7,6 @@ import ErrorPage from './pages/ErrorPage'
 import Homepage from './pages/Homepage'
 import Root from './pages/Root'
 import store from './store/index'
-import { BASE_DIR } from './utils/constants'
 
 const routesConfig = [
   {
@@ -47,9 +46,7 @@ const routesConfig = [
   },
 ]
 
-const router = createBrowserRouter(routesConfig, {
-  basename: `/${BASE_DIR}`,
-})
+const router = createHashRouter(routesConfig) // createBrowserRouter NOT supported by gh-pages
 
 const App = () => {
   return (
