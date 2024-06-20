@@ -10,7 +10,11 @@ const Album = (props) => {
     <Link to={`/album/${props.albumID}`}>
       <div className={styles.album}>
         <div className={styles.album__imageWrapper}>
-          <img className={styles.album__image} src={props.image} />
+          <img
+            className={styles.album__image}
+            src={props.image}
+            alt={props.name}
+          />
           <PlayCircleFilledRoundedIcon
             sx={{ fontSize: '1.8rem' }}
             className={styles.album__playIcon}

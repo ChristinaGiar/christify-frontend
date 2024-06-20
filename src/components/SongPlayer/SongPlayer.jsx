@@ -51,6 +51,7 @@ const SongPlayer = () => {
             <img
               className={styles.details__image}
               src={activeSong.schema.song.image}
+              alt={activeSong.schema.song.name}
             />
             {isMobile() && <div className={styles.details__imagePlaceholder} />}
             <div className={styles.details__texts}>

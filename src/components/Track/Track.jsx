@@ -93,6 +93,7 @@ const Track = (props) => {
               props.type === 'history' ? styles.square : styles.circle
             }`}
             src={props.image}
+            alt={props.name}
           />
         )}
         <div

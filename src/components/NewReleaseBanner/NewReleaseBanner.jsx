@@ -22,6 +22,7 @@ const NewReleaseBanner = ({ accessToken }) => {
         <img
           className={styles.releaseBanner__image}
           src={releaseAlbum.data.image}
+          alt={releaseAlbum.data.name}
         />
       </div>
 
