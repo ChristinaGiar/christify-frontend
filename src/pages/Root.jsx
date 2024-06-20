@@ -36,7 +36,7 @@ const Root = () => {
       const expirationTime = accessToken.data
       timer = setTimeout(() => {
         triggerAccessToken()
-      }, +expirationTime * 1000) //10/4 = 9'
+      }, +expirationTime * 1000) //9000 = 9'
     } catch (error) {
       console.log(error)
     }
