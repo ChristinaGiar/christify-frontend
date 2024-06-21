@@ -5,7 +5,7 @@
 A simple music app which allows the user to listen to tracks, as well as get access to the most recently played ones, review albums and search for his/her favourite songs/albums.
 
 ## Preview
-![]([https://github.com/Your_Repository_Name/Your_GIF_Name.gif](https://github.com/ChristinaGiar/christify-frontend/blob/master/gif/Christify%20gif.gif))
+![](https://github.com/ChristinaGiar/christify-frontend/blob/master/gif/Christify%20gif.gif)
 
 
 ## Architecture
